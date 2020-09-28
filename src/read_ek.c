@@ -3,20 +3,16 @@
 #include <string.h>
 #include <stdio.h>
 
-#include "include/tss2_esys.h"
-#include "include/tss2_mu.h"
-#include "include/tss2_tcti.h"
-#include "include/tss2_tctildr.h"
-#include "include/tss2_tcti_device.h"
+#include <tss2/tss2_esys.h>
+#include <tss2/tss2_mu.h>
+#include <tss2/tss2_tcti.h>
+#include <tss2/tss2_tcti_device.h>
 
 #define TSSWG_INTEROP 1
 #define TSS_SAPI_FIRST_FAMILY 2
 #define TSS_SAPI_FIRST_LEVEL 1
 #define TSS_SAPI_FIRST_VERSION 108
 #define LOG_ERROR printf
-
-
-
 
 
 TSS2_TCTI_CONTEXT *generate_tcti()
