@@ -1,7 +1,7 @@
 Source: piserial
 Section: contrib/electronics
 Priority: extra
-Build-Depends: debhelper (>= 9), dh-exec
+Build-Depends: debhelper (>= 10), cmake, libtss2-dev (>= 2.1)
 Standards-Version: 3.9.8
 Maintainer: Kunbus <admin@kunbus.de>
 Homepage: https://revolution.kunbus.com/
