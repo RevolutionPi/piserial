@@ -1,8 +1,0 @@
-#!/usr/bin/dh-exec
-Target/piSerial				/usr/bin
-debian/piSerial.1			/usr/share/man/man1
-debian/revpi-factory-reset		/usr/sbin
-debian/revpi-factory-reset.8		/usr/share/man/man8
-debian/revpi-factory-reset.sh		/etc/profile.d
-debian/ks8851-set-mac			/usr/sbin
-debian/ks8851-set-mac.8			/usr/share/man/man8
