@@ -1,3 +1,13 @@
+piserial (1.6.3) stable; urgency=medium
+
+  * Fix the failure after several times of tpm chip access.
+    The amount of transient entity of tpm chip is limit, which is
+    4 on flat. To make this work properly, this entity needs to be
+    removed after using with TPM2_FlushContext. It is not sufficient
+    to do this with TPM2_clear.
+
+ -- Zhi Han <z.han@kunbus.com> Tue, 29 Sep 2020 13:58:28 +0100
+
 piserial (1.6.2) stable; urgency=medium
 
   * Switch from Make to CMake.
