@@ -208,6 +208,12 @@ int read_ek(char *buf, int len)
 	    return 1;
     }
 
+    rc = Esys_FlushContext(esys_context, session_handle);
+    if (rc != TSS2_RC_SUCCESS) {
+	    LOG_ERROR("Esys_FlushContext FAILED! Response Code : 0x%x", rc);
+	    return 1;
+    }
+
     /*get ek pub from outPublic*/
     memcpy(buf, outPublic->publicArea.unique.rsa.buffer, len);
 
