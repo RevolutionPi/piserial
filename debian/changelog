@@ -1,3 +1,11 @@
+piserial (1.6.0-1) stable; urgency=medium
+
+  * Change the name of the device Flat with "flat", instead of
+    "connect-flat", matching the name of dts/overlays file for
+    Flat in the linux kernel
+
+ -- Kunbus <admin@kunbus.com>  Tue, 25 Feb 2020 13:58:28 +0100
+
 piserial (1.5.0-1) stable; urgency=medium
 
   * Add support for the connect-flat.

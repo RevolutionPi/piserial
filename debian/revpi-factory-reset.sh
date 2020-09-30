@@ -4,7 +4,7 @@ fi
 
 while [ ! -r /home/pi/.revpi-factory-reset ] ; do
 	echo
-	echo -n "Please enter the product (compact/connect/connect-flat/core): "
+	echo -n "Please enter the product (compact/connect/core/flat): "
 	read ovl
 	echo
 	echo Please enter the serial number and MAC address on the front plate
