@@ -1,0 +1,109 @@
+#!/bin/bash
+# resize root partition to fit the eMMC if it has more than 3.9 GByte;
+# reset dtoverlay, password of user pi, machine-id, hostname, FQDN and
+# MAC address of a RevPi to factory defaults
+
+ovl="$1"
+ser="$2"
+mac="$3"
+mac="${mac,,}"		# downcase
+mac="${mac//-/}"	# remove dashes
+mac="${mac//:/}"	# remove colons
+
+if [ "$#" != 3 ] ||
+   ! [[ "$ovl" =~ ^(compact|connect|core)$ ]] ||
+   ! [[ "$ser" =~ ^[0-9]+$ ]] ||
+   ! [[ "$mac" =~ ^[0-9a-f]{12}$ ]] ; then
+	echo -e 1>&2 "Usage: `basename $0` <compact|connect|core> <serial> <mac addr>\n(see front plate)"
+	exit 1
+fi
+
+if [ "$(/usr/bin/id -u)" != 0 ] ; then
+	echo 1>&2 "This program requires root access"
+	exit 1
+fi
+
+# resize root partition
+dev=mmcblk0
+total_size="$(/bin/cat /sys/block/$dev/size)"
+last_part="$(cd /dev ; /bin/ls ${dev}p* | /usr/bin/tail -1)"
+last_part_start="$(/bin/cat /sys/block/$dev/$last_part/start)"
+last_part_size="$(/bin/cat /sys/block/$dev/$last_part/size)"
+last_part_max="$(($total_size - $last_part_start))"
+if [ "$last_part_size" -lt "$last_part_max" ] ; then
+	/sbin/sfdisk -q --dump "/dev/$dev" | /bin/sed -r -e "\$!n
+\$s/size=[^,]+/size=$last_part_max/" | /sbin/sfdisk -q -f --no-reread --no-tell-kernel "/dev/$dev"
+	/sbin/partprobe "/dev/$dev"
+	/sbin/resize2fs "/dev/$last_part"
+fi
+
+if /bin/grep -q "^dtoverlay=kunbus" /boot/config.txt ; then
+	kernel=44
+else
+	kernel=49
+fi
+
+if [ "$kernel" = 49 ] ; then
+	/bin/sed -r -i -e "/^dtoverlay=revpi-(compact|connect|core)/d" /boot/config.txt
+	echo "dtoverlay=revpi-$ovl" >> /boot/config.txt
+	/usr/bin/dtoverlay "revpi-$ovl"
+	/bin/cp /boot/overlays/revpi-$ovl-dt-blob.dtbo /boot/dt-blob.bin 2>/dev/null
+fi
+
+pw=`/usr/bin/piSerial -p`
+echo -e "Password:\t$pw"
+echo "pi:${pw}" | chpasswd
+
+umount /etc/machine-id 2>/dev/null
+/usr/bin/piSerial -s | /usr/bin/sha256sum | cut -c1-32 > /etc/machine-id
+
+hostname="RevPi$ser"
+echo -e "Hostname:\t$hostname"
+/bin/sed -r -i -e "s/^(127\.0\.1\.1[[:blank:]]+).*/\1$hostname/" /etc/hosts
+echo "$hostname" > /etc/hostname
+/bin/hostname "$hostname"
+
+# remove existing entries before writing new ones
+/bin/sed -r -i -e "/^dtparam=eth[0-9]_mac_/d" /boot/config.txt
+mac_hi="${mac:0:2}${mac:2:2}${mac:4:2}${mac:6:2}"
+mac_lo="${mac:8:2}${mac:10:2}"
+echo -e "MAC Address eth0:\t$mac_hi$mac_lo"
+echo "dtparam=eth0_mac_hi=0x${mac_hi}" >> /boot/config.txt
+echo "dtparam=eth0_mac_lo=0x${mac_lo}" >> /boot/config.txt
+if [[ "$ovl" =~ ^(compact|connect)$ ]] ; then
+	mac_lo1=$(( 0x${mac_lo} + 1))
+	mac_lo1=$(/usr/bin/printf "%.4hx" "${mac_lo1}")
+	echo -e "MAC Address eth1:\t$mac_hi$mac_lo1"
+	echo "dtparam=eth1_mac_hi=0x${mac_hi}" >> /boot/config.txt
+	echo "dtparam=eth1_mac_lo=0x${mac_lo1}" >> /boot/config.txt
+fi
+if [[ "$ovl" =~ ^compact$ ]] ; then
+	/usr/sbin/ks8851-set-mac eth1 "$mac_hi$mac_lo1"
+fi
+if [ "$kernel" = 44 ] ; then
+	mac_cmdline="${mac:0:2}:${mac:2:2}:${mac:4:2}:${mac:6:2}:${mac:8:2}:${mac:10:2}"
+	/bin/sed -r -i -e "s/ *smsc95xx.macaddr=[^ ]*//" -e "s/$/ smsc95xx.macaddr=$mac_cmdline/" /boot/cmdline.txt
+fi
+
+# activate MAC address immediately only if logged in on the console,
+# not via ssh, as the interface has to be taken down
+if [[ `readlink /proc/$$/fd/0` == /dev/tty* ]] ; then
+	/sbin/ifconfig eth0 down
+	/sbin/ifconfig eth0 hw ether "$mac"
+	/sbin/ifconfig eth0 up
+	if [[ "$ovl" =~ ^(compact|connect)$ ]] ; then
+		/sbin/ifconfig eth1 down
+		/sbin/ifconfig eth1 hw ether "$mac"
+		/sbin/ifconfig eth1 up
+	fi
+else
+	echo "Reboot to activate the MAC Address"
+fi
+
+echo "Be sure to write down the password if you have lost the sticker"
+echo "on your RevPi!"
+
+# skip /etc/profile.d/revpi-factory-reset.sh on future logins
+> /home/pi/.revpi-factory-reset
+# skip /etc/profile.d/sshpasswd.sh on future logins
+/usr/bin/sudo /bin/rm -f /run/sshwarn

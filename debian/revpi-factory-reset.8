@@ -1,0 +1,68 @@
+.\"                                      Hey, EMACS: -*- nroff -*-
+.\" (C) Copyright 2017-2019 Kunbus GmbH
+.\"
+.\" First parameter, NAME, should be all caps
+.\" Second parameter, SECTION, should be 1-8, maybe w/ subsection
+.\" other parameters are allowed: see man(7), man(1)
+.TH revpi-factory-reset 8 "Feb 6 2019"
+.\" Please adjust this date whenever revising the manpage.
+.\"
+.\" Some roff macros, for reference:
+.\" .nh        disable hyphenation
+.\" .hy        enable hyphenation
+.\" .ad l      left justify
+.\" .ad b      justify to both left and right margins
+.\" .nf        disable filling
+.\" .fi        enable filling
+.\" .br        insert line break
+.\" .sp <n>    insert n+1 empty lines
+.\" for manpage-specific macros, see man(7)
+.SH NAME
+revpi-factory-reset \- resize root partition and reset device tree overlay,
+password, machine-id, hostname, FQDN and MAC address
+.SH SYNOPSIS
+.B revpi-factory-reset \fI<compact|connect|core>\fP \fI<serial>\fP \fI<mac address>\fP
+.SH DESCRIPTION
+.B revpi-factory-reset
+resizes the root partition to fit the eMMC and resets
+.br
+- the product-specific device tree overlay,
+.br
+- the password of user \fIpi\fP,
+.br
+- the machine-id (128-bit hex string in \fI/etc/machine-id\fP),
+.br
+- the hostname (e.g. \fIRevPi256\fP),
+.br
+- the FQDN (e.g.
+.I abcde12345.co.revolutionpi.de\fP) and
+.br
+- the MAC address of each network interface (e.g.
+.I c8:3e:a7:00:00:00\fP) to factory defaults.
+
+The password, machine-id and FQDN are automatically
+computed from the serial number stored in the RevPi's Atmel
+CryptoAuth chip.
+
+The serial number used for the hostname and the
+MAC address are lasered on the RevPi's front plate and need to
+be supplied as arguments to \fBrevpi-factory-reset\fP.  The MAC address
+is allowed to contain numbers, upper or lower case characters and dashes
+or colons as byte separators.   On RevPis with more than one network
+interface, only a single MAC address needs to be specified.  The other
+MAC addresses are computed automatically since they are consecutive.
+
+The eMMC has 3.9 GByte on RevPis equipped with a CM1 or CM3, but those
+equipped with a CM3+ may have 7.8, 15.6 or 31.2 GByte.  Original RevPi images
+fit the 3.9 GByte eMMC.  If the eMMC is larger, \fBrevpi-factory-reset\fP
+resizes the last partition to the maximum available on the eMMC.  Normally
+the last partition is the root partition but users are free to create
+custom images for the CM3+ with an additional data partition at the end.
+The filesystem on the last partition is expected to be ext4 and will be
+resized as well.
+
+Revolution Pi is a set of IoT products based on the Raspberry Pi and
+geared towards industrial usage.
+.SH SEE ALSO
+For more information on Revolution Pi visit
+.IR https://revolutionpi.kunbus.com
