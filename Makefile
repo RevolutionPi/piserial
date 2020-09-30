@@ -35,8 +35,8 @@ error:
 	$(error Invalid configuration, please check your inputs)
 endif
 
-SOURCEFILES := md5.c piSerialNum.c read_sernum.c
-EXTERNAL_LIBS := 
+SOURCEFILES := md5.c piSerialNum.c read_sernum.c read_ek.c
+EXTERNAL_LIBS :=  
 EXTERNAL_LIBS_COPIED := $(foreach lib, $(EXTERNAL_LIBS),$(BINARYDIR)/$(notdir $(lib)))
 
 CFLAGS += $(COMMONFLAGS)

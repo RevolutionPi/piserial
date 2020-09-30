@@ -15,8 +15,8 @@ OBJCOPY := objcopy
 PREPROCESSOR_MACROS := NDEBUG RELEASE __KUNBUSPI__ __USE_POSIX199309
 INCLUDE_DIRS := . ../../../../platformFbus/common/sw ../../../../platformFbus/compiler/sw/gnuArm ../../../../platformFbus/bsp/sw/bsp/spi ../../../../platformFbus/bsp/LinuxRT/sw ../../../../platformFbus/bsp/sw ../../../../platformFbus/ModGateCom/sw ../../../../platformFbus/utilities/sw
 LIBRARY_DIRS := 
-LIBRARY_NAMES := rt
-ADDITIONAL_LINKER_INPUTS := 
+LIBRARY_NAMES := rt dl crypto
+ADDITIONAL_LINKER_INPUTS := libtss2-esys.a libtss2-tctildr.a libtss2-mu.a libtss2-sys.a
 MACOS_FRAMEWORKS := 
 LINUX_PACKAGES := 
 

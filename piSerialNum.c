@@ -164,6 +164,7 @@ int main(int argc, char *argv[])
         printf("-s show serial number\n");
         printf("-h show hostname\n");
         printf("-p show inital password\n");
+        printf("-t show inital password\n");
         printf("no argument: show all\n");
         exit(0);
         

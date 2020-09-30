@@ -11,10 +11,10 @@ mac="${mac//-/}"	# remove dashes
 mac="${mac//:/}"	# remove colons
 
 if [ "$#" != 3 ] ||
-   ! [[ "$ovl" =~ ^(compact|connect|core)$ ]] ||
+   ! [[ "$ovl" =~ ^(compact|connect|core|con-flat)$ ]] ||
    ! [[ "$ser" =~ ^[0-9]+$ ]] ||
    ! [[ "$mac" =~ ^[0-9a-f]{12}$ ]] ; then
-	echo -e 1>&2 "Usage: `basename $0` <compact|connect|core> <serial> <mac addr>\n(see front plate)"
+	echo -e 1>&2 "Usage: `basename $0` <compact|connect|core|con-flat> <serial> <mac addr>\n(see front plate)"
 	exit 1
 fi
 
@@ -43,9 +43,16 @@ else
 	kernel=49
 fi
 
+
+if [[ "$ovl" =~ ^con-flat$ ]] ; then
+	/bin/sed -r -i -e "/^dtoverlay=revpi-con-tpm/d" /boot/config.txt
+	echo "dtoverlay=revpi-con-tpm" >> /boot/config.txt
+	/usr/bin/dtoverlay "revpi-con-tpm" 
+fi
+
 if [ "$kernel" = 49 ] ; then
-	/bin/sed -r -i -e "/^dtoverlay=revpi-(compact|connect|core)/d" /boot/config.txt
-	echo "dtoverlay=revpi-$ovl" >> /boot/config.txt
+	/bin/sed -r -i -e "/^dtoverlay=revpi-(compact|connect|core|con-flat)/d" /boot/config.txt
+	echo "dtoverlay=revpi-$ovl,sdio_overclock=20" >> /boot/config.txt
 	/usr/bin/dtoverlay "revpi-$ovl"
 	/bin/cp /boot/overlays/revpi-$ovl-dt-blob.dtbo /boot/dt-blob.bin 2>/dev/null
 fi
@@ -70,7 +77,7 @@ mac_lo="${mac:8:2}${mac:10:2}"
 echo -e "MAC Address eth0:\t$mac_hi$mac_lo"
 echo "dtparam=eth0_mac_hi=0x${mac_hi}" >> /boot/config.txt
 echo "dtparam=eth0_mac_lo=0x${mac_lo}" >> /boot/config.txt
-if [[ "$ovl" =~ ^(compact|connect)$ ]] ; then
+if [[ "$ovl" =~ ^(compact|connect|con-flat)$ ]] ; then
 	mac_lo1=$(( 0x${mac_lo} + 1))
 	mac_lo1=$(/usr/bin/printf "%.4hx" "${mac_lo1}")
 	echo -e "MAC Address eth1:\t$mac_hi$mac_lo1"
@@ -91,7 +98,7 @@ if [[ `readlink /proc/$$/fd/0` == /dev/tty* ]] ; then
 	/sbin/ifconfig eth0 down
 	/sbin/ifconfig eth0 hw ether "$mac"
 	/sbin/ifconfig eth0 up
-	if [[ "$ovl" =~ ^(compact|connect)$ ]] ; then
+	if [[ "$ovl" =~ ^(compact|connect|con-flat)$ ]] ; then
 		/sbin/ifconfig eth1 down
 		/sbin/ifconfig eth1 hw ether "$mac"
 		/sbin/ifconfig eth1 up

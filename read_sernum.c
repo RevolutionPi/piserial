@@ -61,6 +61,9 @@
 #include <linux/i2c-dev.h>
 
 #include <sys/ioctl.h>
+#include <errno.h>
+#include <stdio.h>
+#include <sys/stat.h>
 
 uint8_t i8uSernum[8];
 
@@ -85,7 +88,7 @@ static void atCRC(uint8_t length, const uint8_t *data, uint8_t *crc)
     crc[1] = (uint8_t)(crc_register >> 8);
 }
 
-int getSerNum(void)
+int getSerNumI2c(void)
 {
     int fd;
     int r, i;
@@ -164,7 +167,34 @@ int getSerNum(void)
     close(fd);
     return 0;
 }    			
-                
+
+int read_ek(char *buf, int len); 
+int getSerNumTpm(void)
+{
+	static int init = 0;
+
+	if (!init) {
+		read_ek(i8uSernum, 8);
+		init = 1;
+	}
+	return 0;
+} 
+
+int getSerNum(void)
+{
+
+	struct stat s;
+
+	stat("/dev/tpm0", &s);
+
+	if (S_ISCHR(s.st_mode)){
+		return getSerNumTpm();
+	
+	} else {
+		return getSerNumI2c();
+	}
+}               
+
 char *readSerNum(void)
 {
     uint8_t cnt;
