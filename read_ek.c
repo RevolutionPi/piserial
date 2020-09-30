@@ -126,7 +126,6 @@ int read_ek(char *buf, int len)
 	LOG_ERROR("Esys_TR_SetAuth FAILED! Response Code : 0x%x", rc);
 	return 1;
     }
-	
     /*clear*/
     rc = Esys_Clear(esys_context,
 		    ESYS_TR_RH_PLATFORM, 

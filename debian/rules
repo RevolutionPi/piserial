@@ -21,7 +21,7 @@ override_dh_auto_clean:
 	dh_auto_clean -- CONFIG=target USE_DEL_TO_CLEAN=0
 
 override_dh_auto_build:
-	dh_auto_build -- CONFIG=target ADDITIONAL_LINKER_INPUTS="libtss2-esys.a libtss2-tctildr.a libtss2-mu.a libtss2-sys.a" LIBRARY_NAMES="dl crypto"
+	dh_auto_build -- CONFIG=target ADDITIONAL_LINKER_INPUTS="libtss2-esys.a libtss2-tctildr.a libtss2-mu.a libtss2-sys.a libtss2-tcti-device.a libtss2-tcti-mssim.a" LIBRARY_NAMES="dl crypto"
 
 override_dh_shlibdeps:
 	dh_shlibdeps -l/usr/arm-linux-gnueabihf/lib
