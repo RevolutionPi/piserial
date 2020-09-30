@@ -7,12 +7,50 @@
 #include "include/tss2_mu.h"
 #include "include/tss2_tcti.h"
 #include "include/tss2_tctildr.h"
+#include "include/tss2_tcti_device.h"
 
 #define TSSWG_INTEROP 1
 #define TSS_SAPI_FIRST_FAMILY 2
 #define TSS_SAPI_FIRST_LEVEL 1
 #define TSS_SAPI_FIRST_VERSION 108
 #define LOG_ERROR printf
+
+
+
+
+
+TSS2_TCTI_CONTEXT *generate_tcti()
+{
+
+    TSS2_TCTI_CONTEXT *tcti_ctx = NULL;
+
+    size_t size;
+	/*to get the size of TSS2_TCTI_DEVICE_CONTEXT */
+    TSS2_RC rc = Tss2_Tcti_Device_Init(NULL, &size, NULL);
+    if (rc != TPM2_RC_SUCCESS) {
+        LOG_ERROR("try to get the size of TSS2_TCTI_DEVICE_CONTEXT failed\n");
+        goto err;
+    }
+
+    tcti_ctx = (TSS2_TCTI_CONTEXT*) calloc(1, size);
+    if (tcti_ctx == NULL) {
+        LOG_ERROR("oom");
+        goto err;
+    }
+
+    rc = Tss2_Tcti_Device_Init(tcti_ctx, &size, NULL);
+    if (rc != TPM2_RC_SUCCESS) {
+        LOG_ERROR("Tss2_Tcti_Device_Init failed\n");
+        goto err;
+    }
+
+    return tcti_ctx;
+
+err:
+    free(tcti_ctx);
+    return NULL;
+}
+
 
 int read_ek(char *buf, int len)
 {	
@@ -97,9 +135,9 @@ int read_ek(char *buf, int len)
 	if (len > TPM2_MAX_RSA_KEY_BYTES) 
 		return -1;
 	
-	rc = Tss2_TctiLdr_Initialize(NULL, &tcti_context);
-	if (rc != TSS2_RC_SUCCESS) {
-        LOG_ERROR("Tss2_TctiLdr_Initialize FAILED! Response Code : 0x%x", rc);
+	tcti_context = generate_tcti();
+	if (tcti_context == NULL) {
+        LOG_ERROR("generate_tcti FAILED!\n");
         return 1;
     }
 	
@@ -179,7 +217,7 @@ int read_ek(char *buf, int len)
 
     Esys_Finalize(&esys_context);
 	
-    Tss2_TctiLdr_Finalize(&tcti_context);
+    //TODO: tcti finalize;
 
     return 0;
 

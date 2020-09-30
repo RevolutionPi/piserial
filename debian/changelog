@@ -1,10 +1,19 @@
+piserial (1.6.1-1) stable; urgency=medium
+
+  * Switch the libtss2-* from 2.3 static (github master version in Nov
+    2019) to 2.1 dynamic (version of buster).
+    As in 2.1 the tcti loading function was not available, generate_tcti()
+    is added to get the tcti context.
+
+ -- Kunbus <admin@kunbus.com>  Tue, 25 Sep 2020 13:58:28 +0100
+
 piserial (1.6.0-1) stable; urgency=medium
 
   * Change the name of the device Flat with "flat", instead of
     "connect-flat", matching the name of dts/overlays file for
     Flat in the linux kernel
 
- -- Kunbus <admin@kunbus.com>  Tue, 25 Feb 2020 13:58:28 +0100
+ -- Kunbus <admin@kunbus.com>  Tue, 21 Sep 2020 13:58:28 +0100
 
 piserial (1.5.0-1) stable; urgency=medium
 
