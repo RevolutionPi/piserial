@@ -21,8 +21,6 @@ typedef unsigned char       TBOOL;       ///< Boolean value (bTRUE/bFALSE)
 #include <limits.h>
 #include <linux/i2c-dev.h>
 
-#include "project.h"
-
 #include <sys/ioctl.h>
 
 int getSerNum(void);
