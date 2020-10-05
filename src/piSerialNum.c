@@ -114,7 +114,6 @@ char *getPassword(void)
         data &= 0x001f;
         sPassword[cnt] = sCode32[data];
     }
-    sPassword[10] = 0;
     
     return sPassword;
 }
