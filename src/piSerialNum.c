@@ -23,7 +23,7 @@ typedef unsigned char       TBOOL;       ///< Boolean value (bTRUE/bFALSE)
 
 #include <sys/ioctl.h>
 
-int getSerNum(void);
+int get_sn_i2c(char *dev_node);
 char *readSerNum(void);
 char *getHostname(void);
 char *getPassword(void);
@@ -48,9 +48,7 @@ char *getHostname(void)
     sSalt[17] = 0xaa;
     sSalt[18] = 0xf2;
     sSalt[5] = 0xd1;
-    
-    getSerNum();
-    
+
     sSalt[25] = 0x40;
     sSalt[27] = i8uSernum[5];
     sSalt[14] = 0x36;
@@ -93,9 +91,7 @@ char *getPassword(void)
     static char sPassword[7];
     char *sCode32 = "hancvo714xqwelm289rtz0356sdfgybp";
     uint8_t i8uSalt[] = { 0x81, 0xae, 0xf2, 0x9d, 0x47, 0xd3 };
-    
-    getSerNum();
-    
+
     for (cnt = 0; cnt < 6; cnt++)
     {
         i8uSalt[cnt] ^= i8uSernum[cnt + 2];
@@ -118,85 +114,73 @@ char *getPassword(void)
     return sPassword;
 }
 
+#define ENCRYPT_DEV_I2C		0
+
 int main(int argc, char *argv[])
 {
-    int cnt, r;
-    TBOOL bShowSerNum = bTRUE;
-    TBOOL bShowHostname = bTRUE;
-    TBOOL bShowDefaultPassword = bTRUE;
-    
-    if (argc == 1)
-    {
-        // show all
-    }
-    else if (argc == 2)
-    {
-        if (strcmp(argv[1], "-s") == 0)
-        {
-            bShowSerNum = bTRUE;
-            bShowHostname = bFALSE;
-            bShowDefaultPassword = bFALSE;
-        }
-        else if (strcmp(argv[1], "-h") == 0)
-        {
-            bShowSerNum = bFALSE;
-            bShowHostname = bTRUE;
-            bShowDefaultPassword = bFALSE;
-        }
-        else if (strcmp(argv[1], "-p") == 0)
-        {
-            bShowSerNum = bFALSE;
-            bShowHostname = bFALSE;
-            bShowDefaultPassword = bTRUE;
-        }
-        else
-        {
-            argc = 3;
-        }
-    }
-    
-    if (argc > 2)
-    {
-        printf("usage: %s [-s|-h|-p]\n\n", argv[0]);
-        printf("-s show serial number\n");
-        printf("-h show hostname\n");
-        printf("-p show inital password\n");
-        printf("no argument: show all\n");
-        exit(0);
-        
-    }
+	int cnt, r = 0, c;
+	TBOOL bShowSerNum = bTRUE;
+	TBOOL bShowHostname = bTRUE;
+	TBOOL bShowDefaultPassword = bTRUE;
+	/* by default get the serial number from /dev/i2c-1 */
+	int crypt_dev = ENCRYPT_DEV_I2C;
+	char dev_path[256] = "/dev/i2c-1";
 
-    cnt = 0;
-    do
-    {
-        r = getSerNum();
-        if (r < 0)
-        {
-            //printf("getSerNum() failed %d\n", r);
-        }
-        cnt++;
-        if (cnt > 10)
-        {
-            printf("getSerNum() failed %d\n", r);
-            exit(-1);
-        }
-    } while (r < 0);
-    
-    
-    if (bShowSerNum)
-    {
-        printf("%s ", readSerNum());
-    }
-    if (bShowHostname)
-    {
-        printf("%s ", getHostname());
-    }
-    if (bShowDefaultPassword)
-    {
-        printf("%s", getPassword());
-    }
-    printf("\n");
-    return 0;
+
+	while ((c = getopt(argc, argv, "shp")) != -1) {
+		switch (c) {
+		case 's':
+			bShowSerNum = bTRUE;
+			bShowHostname = bFALSE;
+			bShowDefaultPassword = bFALSE;
+			break;
+		case 'h':
+			bShowSerNum = bFALSE;
+			bShowHostname = bTRUE;
+			bShowDefaultPassword = bFALSE;
+			break;
+		case 'p':
+			bShowSerNum = bFALSE;
+			bShowHostname = bFALSE;
+			bShowDefaultPassword = bTRUE;
+			break;
+		default:
+			printf("usage: %s [-s ][-h ][-p ]\n\n", argv[0]);
+			printf("-s show serial number\n");
+			printf("-h show hostname\n");
+			printf("-p show inital password\n");
+			printf("no argument for show: show all\n");
+			exit(0);
+			break;
+		}
+	}
+
+	if (crypt_dev == ENCRYPT_DEV_I2C) {
+		for (cnt = 0; cnt < 10; cnt ++) {
+			r = get_sn_i2c(dev_path);
+			if (!r) break;
+		}
+	}
+
+	if (r) {
+		printf("get serial number failed:%d\n", r);
+		exit(1);
+	}
+
+	if (bShowSerNum)
+	{
+		printf("%s ", readSerNum());
+	}
+	if (bShowHostname)
+	{
+		printf("%s ", getHostname());
+	}
+	if (bShowDefaultPassword)
+	{
+		printf("%s", getPassword());
+	}
+	printf("\n");
+	return 0;
 }
 
 
