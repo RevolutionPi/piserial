@@ -23,7 +23,8 @@ typedef unsigned char       TBOOL;       ///< Boolean value (bTRUE/bFALSE)
 
 #include <sys/ioctl.h>
 
-int get_sn_i2c(char *dev_node);
+int get_sn_tpm(const char *dev_node);
+int get_sn_i2c(const char *dev_node);
 char *readSerNum(void);
 char *getHostname(void);
 char *getPassword(void);
@@ -114,8 +115,6 @@ char *getPassword(void)
     return sPassword;
 }
 
-#define ENCRYPT_DEV_I2C		0
-
 int main(int argc, char *argv[])
 {
 	int cnt, r = 0, c;
@@ -123,15 +122,30 @@ int main(int argc, char *argv[])
 	TBOOL bShowHostname = bTRUE;
 	TBOOL bShowDefaultPassword = bTRUE;
 	/* by default get the serial number from /dev/i2c-1 */
-	int crypt_dev = ENCRYPT_DEV_I2C;
+	enum cypt_dev_type {CRYPT_DEV_I2C, CRYPT_DEV_TPM};
+	enum cypt_dev_type crypt_dev = CRYPT_DEV_I2C;
 	char dev_path[256] = "/dev/i2c-1";
+	size_t path_len;
 
-
-	while ((c = getopt(argc, argv, "c:shp")) != -1) {
+	while ((c = getopt(argc, argv, "c:t:shp")) != -1) {
 		switch (c) {
+		case 't':
+			crypt_dev = CRYPT_DEV_TPM;
+			path_len = strlen(optarg) + 1;
+			if (path_len > sizeof(dev_path)) {
+				printf("dev name is too long\n");
+				exit(1);
+			}
+			memcpy(dev_path, optarg, path_len);
+			break;
 		case 'c':
-			crypt_dev = ENCRYPT_DEV_I2C;
-			memcpy(dev_path, optarg, strlen(optarg) + 1);
+			crypt_dev = CRYPT_DEV_I2C;
+			path_len = strlen(optarg) + 1;
+			if (path_len > sizeof(dev_path)) {
+				printf("dev name is too long\n");
+				exit(1);
+			}
+			memcpy(dev_path, optarg, path_len);
 			break;
 		case 's':
 			bShowSerNum = bTRUE;
@@ -149,8 +163,10 @@ int main(int argc, char *argv[])
 			bShowDefaultPassword = bTRUE;
 			break;
 		default:
-			printf("usage: %s [-c dev ][-s ][-h ][-p ]\n\n", argv[0]);
+			printf("usage: %s [-c dev|-t dev ][-s ][-h ][-p ]\n\n",
+								argv[0]);
 			printf("-c specify the tpm encrypt chip\n");
+			printf("-t specify the i2c encrypt chip\n");
 			printf("-s show serial number\n");
 			printf("-h show hostname\n");
 			printf("-p show inital password\n");
@@ -160,7 +176,9 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	if (crypt_dev == ENCRYPT_DEV_I2C) {
+	if (crypt_dev == CRYPT_DEV_TPM) {
+		r = get_sn_tpm(dev_path);
+	} else {
 		for (cnt = 0; cnt < 10; cnt ++) {
 			r = get_sn_i2c(dev_path);
 			if (!r) break;
