@@ -127,8 +127,12 @@ int main(int argc, char *argv[])
 	char dev_path[256] = "/dev/i2c-1";
 
 
-	while ((c = getopt(argc, argv, "shp")) != -1) {
+	while ((c = getopt(argc, argv, "c:shp")) != -1) {
 		switch (c) {
+		case 'c':
+			crypt_dev = ENCRYPT_DEV_I2C;
+			memcpy(dev_path, optarg, strlen(optarg) + 1);
+			break;
 		case 's':
 			bShowSerNum = bTRUE;
 			bShowHostname = bFALSE;
@@ -145,7 +149,8 @@ int main(int argc, char *argv[])
 			bShowDefaultPassword = bTRUE;
 			break;
 		default:
-			printf("usage: %s [-s ][-h ][-p ]\n\n", argv[0]);
+			printf("usage: %s [-c dev ][-s ][-h ][-p ]\n\n", argv[0]);
+			printf("-c specify the tpm encrypt chip\n");
 			printf("-s show serial number\n");
 			printf("-h show hostname\n");
 			printf("-p show inital password\n");
