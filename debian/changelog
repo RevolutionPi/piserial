@@ -1,3 +1,14 @@
+piserial (1.4.4) stable; urgency=medium
+
+  * Switch to Debian native package format.
+  * Source tree cleanup.
+  * Switch to CMake as build tool.
+  * Update debianization.
+  * Use debhelper version 10 (stretch).
+  * Fix out of bound access to array.
+
+ -- Philipp Rosenberger <p.rosenberger@kunbus.com>  Wed, 07 Oct 2020 15:43:07 +0200
+
 piserial (1.4.3-1) stable; urgency=medium
 
   * Before adding the appropriate dtoverlay to /boot/config.txt,
