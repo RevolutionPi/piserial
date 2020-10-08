@@ -1,3 +1,9 @@
+piserial (1.4.5) stable; urgency=medium
+
+  * Remove unused/wrong build dependency.
+
+ -- Philipp Rosenberger <p.rosenberger@kunbus.com>  Thu, 08 Oct 2020 11:35:29 +0200
+
 piserial (1.4.4) stable; urgency=medium
 
   * Switch to Debian native package format.
