@@ -71,103 +71,105 @@ uint8_t i8uSernum[8];
 
 static void atCRC(uint8_t length, const uint8_t *data, uint8_t *crc)
 {
-    uint8_t counter;
-    uint16_t crc_register = 0;
-    uint16_t polynom = 0x8005;
-    uint8_t shift_register;
-    uint8_t data_bit, crc_bit;
+	uint8_t counter;
+	uint16_t crc_register = 0;
+	uint16_t polynom = 0x8005;
+	uint8_t shift_register;
+	uint8_t data_bit, crc_bit;
 
-    for (counter = 0; counter < length; counter++) {
-        for (shift_register = 0x01; shift_register > 0x00; shift_register <<= 1) {
-            data_bit = (data[counter] & shift_register) ? 1 : 0;
-            crc_bit = crc_register >> 15;
-            crc_register <<= 1;
-            if (data_bit != crc_bit)
-                crc_register ^= polynom;
-        }
-    }
-    crc[0] = (uint8_t)(crc_register & 0x00FF);
-    crc[1] = (uint8_t)(crc_register >> 8);
+	for (counter = 0; counter < length; counter++) {
+		for (shift_register = 0x01;
+			shift_register > 0x00;
+			shift_register <<= 1) {
+			data_bit = (data[counter] & shift_register) ? 1 : 0;
+			crc_bit = crc_register >> 15;
+			crc_register <<= 1;
+			if (data_bit != crc_bit)
+				crc_register ^= polynom;
+		}
+	}
+	crc[0] = (uint8_t)(crc_register & 0x00FF);
+	crc[1] = (uint8_t)(crc_register >> 8);
 }
 
 int get_sn_i2c(const char *dev_node)
 {
-    int fd;
-    int r, i;
-    uint8_t buf[10];
-    uint8_t cnt;
-    
-    fd = open(dev_node, O_RDWR);
-    if (fd < 0)
-    {
-        return -1;
-    }
-    
-    int addr = 0x60;
-    if (ioctl(fd, I2C_SLAVE, addr) < 0) 
-    {
-        close(fd);
-        return -2;
-    }
- 
-    for (i = 0; i < 2; i++)
-    {
-        /* Using I2C read */
-        buf[0] = 0x03;	// command
-        buf[1] = 7;		// length
-        buf[2] = 0x02;	// read
-        buf[3] = 0x00;	// zone
-        if (i == 0)
-        {
-            // the sernum is stored under address 0 and 2
-            buf[4] = 0;		// address
-        }
-        else
-        {
-            buf[4] = 2;		// address
-        }
-            
-        buf[5] = 0x00;	// address
+	int fd;
+	int r, i;
+	uint8_t buf[10];
+	uint8_t cnt;
 
-        atCRC(5, buf + 1, buf + 6);
-        
-        cnt = 0;
-        while (cnt < 20 && write(fd, buf, buf[1] + 1) != buf[1] + 1) 
-        {
-            // make some retries until chip wakes up
-            cnt++;
-        }
-        if (cnt >= 20)
-        {
-            // chip did not respond
-            close(fd);
-            return -3;
-        }
-    
-        cnt = 0;
-        while (cnt < 20)
-        {
-            r = read(fd, buf, 10);
-            if (r > 0 && buf[0] == 7) 
-                break;
-            cnt++;
-        }
-        if (cnt >= 20)
-        {
-            // chip did not respond
-            close(fd);
-            return -4;
-        }
-        
-        for (cnt = 0; cnt < 4; cnt++)
-        {
-            i8uSernum[i * 4 + cnt] = buf[1 + cnt];
-        }
-        usleep(1000);
-    }
+	fd = open(dev_node, O_RDWR);
+	if (fd < 0)
+	{
+		return -1;
+	}
 
-    close(fd);
-    return 0;
+	int addr = 0x60;
+	if (ioctl(fd, I2C_SLAVE, addr) < 0)
+	{
+		close(fd);
+		return -2;
+	}
+
+	for (i = 0; i < 2; i++)
+	{
+		/* Using I2C read */
+		buf[0] = 0x03;	// command
+		buf[1] = 7;		// length
+		buf[2] = 0x02;	// read
+		buf[3] = 0x00;	// zone
+		if (i == 0)
+		{
+			// the sernum is stored under address 0 and 2
+			buf[4] = 0;		// address
+		}
+		else
+		{
+			buf[4] = 2;		// address
+		}
+
+		buf[5] = 0x00;	// address
+
+		atCRC(5, buf + 1, buf + 6);
+
+		cnt = 0;
+		while (cnt < 20 && write(fd, buf, buf[1] + 1) != buf[1] + 1)
+		{
+			// make some retries until chip wakes up
+			cnt++;
+		}
+		if (cnt >= 20)
+		{
+			// chip did not respond
+			close(fd);
+			return -3;
+		}
+
+		cnt = 0;
+		while (cnt < 20)
+		{
+			r = read(fd, buf, 10);
+			if (r > 0 && buf[0] == 7)
+				break;
+			cnt++;
+		}
+		if (cnt >= 20)
+		{
+			// chip did not respond
+			close(fd);
+			return -4;
+		}
+
+		for (cnt = 0; cnt < 4; cnt++)
+		{
+			i8uSernum[i * 4 + cnt] = buf[1 + cnt];
+		}
+		usleep(1000);
+	}
+
+	close(fd);
+	return 0;
 }
 
 int get_sn_tpm(const char *dev_node)
@@ -177,16 +179,16 @@ int get_sn_tpm(const char *dev_node)
 
 char *readSerNum(void)
 {
-    uint8_t cnt;
-    static char sSernum[17];
-    char *sHex = "0123456789ABCDEF";
-        
-    for (cnt = 0; cnt < 8; cnt++)
-    {
-        sSernum[cnt * 2] = sHex[i8uSernum[cnt] >> 4];
-        sSernum[cnt * 2 + 1] = sHex[i8uSernum[cnt] & 0x0f];
-    }
-    sSernum[16] = 0;
-    
-    return sSernum;
+	uint8_t cnt;
+	static char sSernum[17];
+	char *sHex = "0123456789ABCDEF";
+
+	for (cnt = 0; cnt < 8; cnt++)
+	{
+		sSernum[cnt * 2] = sHex[i8uSernum[cnt] >> 4];
+		sSernum[cnt * 2 + 1] = sHex[i8uSernum[cnt] & 0x0f];
+	}
+	sSernum[16] = 0;
+
+	return sSernum;
 }
