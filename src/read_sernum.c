@@ -85,7 +85,7 @@ static void atCRC(uint8_t length, const uint8_t *data, uint8_t *crc)
 	crc[1] = (uint8_t)(crc_register >> 8);
 }
 
-int getSerNum(void)
+int get_sn_i2c(void)
 {
 	int fd;
 	int r, i;

@@ -23,7 +23,7 @@ typedef unsigned char       TBOOL;       ///< Boolean value (bTRUE/bFALSE)
 
 #include <sys/ioctl.h>
 
-int getSerNum(void);
+int get_sn_i2c(void);
 char *readSerNum(void);
 char *getHostname(void);
 char *getPassword(void);
@@ -49,7 +49,7 @@ char *getHostname(void)
 	sSalt[18] = 0xf2;
 	sSalt[5] = 0xd1;
 
-	getSerNum();
+	get_sn_i2c();
 
 	sSalt[25] = 0x40;
 	sSalt[27] = i8uSernum[5];
@@ -94,7 +94,7 @@ char *getPassword(void)
 	char *sCode32 = "hancvo714xqwelm289rtz0356sdfgybp";
 	uint8_t i8uSalt[] = { 0x81, 0xae, 0xf2, 0x9d, 0x47, 0xd3 };
 
-	getSerNum();
+	get_sn_i2c();
 
 	for (cnt = 0; cnt < 6; cnt++)
 	{
@@ -168,15 +168,15 @@ int main(int argc, char *argv[])
 	cnt = 0;
 	do
 	{
-		r = getSerNum();
+		r = get_sn_i2c();
 		if (r < 0)
 		{
-			//printf("getSerNum() failed %d\n", r);
+			//printf("get_sn_i2c() failed %d\n", r);
 		}
 		cnt++;
 		if (cnt > 10)
 		{
-			printf("getSerNum() failed %d\n", r);
+			printf("get_sn_i2c() failed %d\n", r);
 			exit(-1);
 		}
 	} while (r < 0);
