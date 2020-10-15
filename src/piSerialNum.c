@@ -124,8 +124,11 @@ int main(int argc, char *argv[])
 	const char *dev_path = "/dev/i2c-1";
 	int opt;
 
-	while ((opt = getopt(argc, argv, "shp")) != -1) {
+	while ((opt = getopt(argc, argv, "c:shp")) != -1) {
 		switch (opt) {
+		case 'c':
+			dev_path = optarg;
+			break;
 		case 's':
 			bShowSerNum = bTRUE;
 			bShowHostname = bFALSE;
@@ -142,7 +145,9 @@ int main(int argc, char *argv[])
 			bShowDefaultPassword = bTRUE;
 			break;
 		default:
-			printf("usage: %s [-s ][-h ][-p ]\n\n", argv[0]);
+			printf("usage: %s [-c dev ][-s ][-h ][-p ]\n\n",
+								argv[0]);
+			printf("-c specify the i2c device of the crypto chip\n");
 			printf("-s show serial number\n");
 			printf("-h show hostname\n");
 			printf("-p show inital password\n");
