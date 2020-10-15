@@ -175,7 +175,7 @@ int main(int argc, char *argv[])
 	}
 	if (r < 0) {
 		printf("get serial number failed:%d\n", r);
-		exit(1);
+		exit(EXIT_FAILURE);
 	}
 
 	if (bShowSerNum)
