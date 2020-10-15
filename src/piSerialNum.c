@@ -116,7 +116,7 @@ char *getPassword(void)
 
 int main(int argc, char *argv[])
 {
-	int cnt, r;
+	int r;
 	TBOOL bShowSerNum = bTRUE;
 	TBOOL bShowHostname = bTRUE;
 	TBOOL bShowDefaultPassword = bTRUE;
@@ -151,21 +151,14 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	cnt = 0;
-	do
-	{
+	for (int cnt = 0; cnt < 10; cnt ++) {
 		r = get_sn_i2c(dev_path);
-		if (r < 0)
-		{
-			//printf("get_sn_i2c() failed %d\n", r);
-		}
-		cnt++;
-		if (cnt > 10)
-		{
-			printf("get_sn_i2c() failed %d\n", r);
-			exit(-1);
-		}
-	} while (r < 0);
+		if (r >= 0) break;
+	}
+	if (r < 0) {
+		printf("get_sn_i2c() failed :%d\n", r);
+		exit(1);
+	}
 
 	if (bShowSerNum)
 	{
