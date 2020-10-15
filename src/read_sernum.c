@@ -54,12 +54,16 @@
  *
  */
 
+#include <errno.h>
 #include <fcntl.h>
 #include <linux/i2c-dev.h>
 #include <stdint.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <sys/ioctl.h>
 #include <unistd.h>
+
+unsigned int read_ek(const char *dev_node, char *buf, int len);
 
 uint8_t i8uSernum[8];
 
@@ -161,6 +165,18 @@ int get_sn_i2c(const char *dev_node)
 	}
 
 	close(fd);
+	return 0;
+}
+
+int get_sn_tpm(const char *dev_node)
+{
+	unsigned int rc;
+
+	rc = read_ek(dev_node, i8uSernum, 8);
+	if (rc) {
+		printf("read from tpm crypto chip failed: %u\n", rc);
+		return ENODATA;
+	}
 	return 0;
 }
 

@@ -23,6 +23,7 @@ typedef unsigned char       TBOOL;       ///< Boolean value (bTRUE/bFALSE)
 
 #include <sys/ioctl.h>
 
+int get_sn_tpm(const char *dev_node);
 int get_sn_i2c(const char *dev_node);
 char *readSerNum(void);
 char *getHostname(void);
@@ -121,12 +122,19 @@ int main(int argc, char *argv[])
 	TBOOL bShowHostname = bTRUE;
 	TBOOL bShowDefaultPassword = bTRUE;
 	/* by default get the serial number from /dev/i2c-1 */
+	enum cypt_dev_type {CRYPT_DEV_I2C, CRYPT_DEV_TPM};
+	enum cypt_dev_type crypt_dev = CRYPT_DEV_I2C;
 	const char *dev_path = "/dev/i2c-1";
 	int opt;
 
-	while ((opt = getopt(argc, argv, "c:shp")) != -1) {
+	while ((opt = getopt(argc, argv, "c:t:shp")) != -1) {
 		switch (opt) {
 		case 'c':
+			crypt_dev = CRYPT_DEV_I2C;
+			dev_path = optarg;
+			break;
+		case 't':
+			crypt_dev = CRYPT_DEV_TPM;
 			dev_path = optarg;
 			break;
 		case 's':
@@ -145,9 +153,10 @@ int main(int argc, char *argv[])
 			bShowDefaultPassword = bTRUE;
 			break;
 		default:
-			printf("usage: %s [-c dev ][-s ][-h ][-p ]\n\n",
+			printf("usage: %s [-c dev|-t dev ][-s ][-h ][-p ]\n\n",
 								argv[0]);
 			printf("-c specify the i2c device of the crypto chip\n");
+			printf("-t specify the device of the tpm\n");
 			printf("-s show serial number\n");
 			printf("-h show hostname\n");
 			printf("-p show inital password\n");
@@ -156,9 +165,13 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	for (int cnt = 0; cnt < 10; cnt ++) {
-		r = get_sn_i2c(dev_path);
-		if (r >= 0) break;
+	if (crypt_dev == CRYPT_DEV_TPM) {
+		r = get_sn_tpm(dev_path);
+	} else {
+		for (int cnt = 0; cnt < 10; cnt ++) {
+			r = get_sn_i2c(dev_path);
+			if (r >= 0) break;
+		}
 	}
 	if (r < 0) {
 		printf("get serial number failed:%d\n", r);
