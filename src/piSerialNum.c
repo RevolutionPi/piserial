@@ -120,45 +120,34 @@ int main(int argc, char *argv[])
 	TBOOL bShowSerNum = bTRUE;
 	TBOOL bShowHostname = bTRUE;
 	TBOOL bShowDefaultPassword = bTRUE;
+	int c;
 
-	if (argc == 1)
-	{
-		// show all
-	}
-	else if (argc == 2)
-	{
-		if (strcmp(argv[1], "-s") == 0)
-		{
+	while ((c = getopt(argc, argv, "shp")) != -1) {
+		switch (c) {
+		case 's':
 			bShowSerNum = bTRUE;
 			bShowHostname = bFALSE;
 			bShowDefaultPassword = bFALSE;
-		}
-		else if (strcmp(argv[1], "-h") == 0)
-		{
+			break;
+		case 'h':
 			bShowSerNum = bFALSE;
 			bShowHostname = bTRUE;
 			bShowDefaultPassword = bFALSE;
-		}
-		else if (strcmp(argv[1], "-p") == 0)
-		{
+			break;
+		case 'p':
 			bShowSerNum = bFALSE;
 			bShowHostname = bFALSE;
 			bShowDefaultPassword = bTRUE;
+			break;
+		default:
+			printf("usage: %s [-s ][-h ][-p ]\n\n", argv[0]);
+			printf("-s show serial number\n");
+			printf("-h show hostname\n");
+			printf("-p show inital password\n");
+			printf("no argument for show: show all\n");
+			exit(0);
+			break;
 		}
-		else
-		{
-			argc = 3;
-		}
-	}
-
-	if (argc > 2)
-	{
-		printf("usage: %s [-s|-h|-p]\n\n", argv[0]);
-		printf("-s show serial number\n");
-		printf("-h show hostname\n");
-		printf("-p show inital password\n");
-		printf("no argument: show all\n");
-		exit(0);
 	}
 
 	cnt = 0;
