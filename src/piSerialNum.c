@@ -23,7 +23,7 @@ typedef unsigned char       TBOOL;       ///< Boolean value (bTRUE/bFALSE)
 
 #include <sys/ioctl.h>
 
-int get_sn_i2c(void);
+int get_sn_i2c(const char *dev_node);
 char *readSerNum(void);
 char *getHostname(void);
 char *getPassword(void);
@@ -120,6 +120,8 @@ int main(int argc, char *argv[])
 	TBOOL bShowSerNum = bTRUE;
 	TBOOL bShowHostname = bTRUE;
 	TBOOL bShowDefaultPassword = bTRUE;
+	/* by default get the serial number from /dev/i2c-1 */
+	const char *dev_path = "/dev/i2c-1";
 	int opt;
 
 	while ((opt = getopt(argc, argv, "shp")) != -1) {
@@ -152,7 +154,7 @@ int main(int argc, char *argv[])
 	cnt = 0;
 	do
 	{
-		r = get_sn_i2c();
+		r = get_sn_i2c(dev_path);
 		if (r < 0)
 		{
 			//printf("get_sn_i2c() failed %d\n", r);

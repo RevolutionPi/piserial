@@ -85,14 +85,14 @@ static void atCRC(uint8_t length, const uint8_t *data, uint8_t *crc)
 	crc[1] = (uint8_t)(crc_register >> 8);
 }
 
-int get_sn_i2c(void)
+int get_sn_i2c(const char *dev_node)
 {
 	int fd;
 	int r, i;
 	uint8_t buf[10];
 	uint8_t cnt;
 
-	fd = open("/dev/i2c-1", O_RDWR);
+	fd = open(dev_node, O_RDWR);
 	if (fd < 0)
 	{
 		return -1;
