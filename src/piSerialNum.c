@@ -156,7 +156,7 @@ int main(int argc, char *argv[])
 		if (r >= 0) break;
 	}
 	if (r < 0) {
-		printf("get_sn_i2c() failed :%d\n", r);
+		printf("get serial number failed:%d\n", r);
 		exit(1);
 	}
 
