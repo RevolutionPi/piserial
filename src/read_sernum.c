@@ -32,7 +32,7 @@
  * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
  * POSSIBILITY OF SUCH DAMAGE.
  *
- * 
+ *
  * Extensions by KUNBUS under the following License
  *
  * Copyright (C) 2017 : KUNBUS GmbH, Heerweg 15C, 73370 Denkendorf, Germany
@@ -51,7 +51,7 @@
  * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
- * 
+ *
  */
 
 #include <stdint.h>
@@ -163,7 +163,7 @@ int get_sn_i2c(const char *dev_node)
 
 	close(fd);
 	return 0;
-}    			
+}
 
 char *readSerNum(void)
 {
