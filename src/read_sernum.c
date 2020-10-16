@@ -54,13 +54,12 @@
  *
  */
 
-#include <stdint.h>
-#include <unistd.h>
-#include <stdlib.h>
 #include <fcntl.h>
 #include <linux/i2c-dev.h>
-
+#include <stdint.h>
+#include <stdlib.h>
 #include <sys/ioctl.h>
+#include <unistd.h>
 
 uint8_t i8uSernum[8];
 
