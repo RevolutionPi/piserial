@@ -50,12 +50,18 @@ if [ "$kernel" = 49 ] ; then
 	/bin/cp /boot/overlays/revpi-$ovl-dt-blob.dtbo /boot/dt-blob.bin 2>/dev/null
 fi
 
-pw=`/usr/bin/piSerial -p`
-echo -e "Password:\t$pw"
-echo "pi:${pw}" | chpasswd
+piserial="/usr/bin/piSerial"
+sn_exist=true
+piserial_args=""
 
-umount /etc/machine-id 2>/dev/null
-/usr/bin/piSerial -s | /usr/bin/sha256sum | cut -c1-32 > /etc/machine-id
+if [ "$sn_exist" = true ]; then
+	pw=`$piserial $piserial_args -p`
+	echo -e "Password:\t$pw"
+	echo "pi:${pw}" | chpasswd
+
+	umount /etc/machine-id 2>/dev/null
+	$piserial $piserial_args -s | /usr/bin/sha256sum | cut -c1-32 > /etc/machine-id
+fi
 
 hostname="RevPi$ser"
 echo -e "Hostname:\t$hostname"
