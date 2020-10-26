@@ -123,8 +123,8 @@ int main(int argc, char *argv[])
 	TBOOL bShowDefaultPassword = bTRUE;
 	/* by default get the serial number from /dev/i2c-1 */
 	enum cypt_dev_type {CRYPT_DEV_I2C, CRYPT_DEV_TPM};
-	enum cypt_dev_type crypt_dev = CRYPT_DEV_I2C;
-	const char *dev_path = "/dev/i2c-1";
+	enum cypt_dev_type crypt_dev = CRYPT_DEV_TPM;
+	const char *dev_path = "/dev/tpm0";
 	int opt;
 
 	while ((opt = getopt(argc, argv, "c:t:shp")) != -1) {
