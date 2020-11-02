@@ -1,4 +1,10 @@
-piserial (1.4.6~0flat1) UNRELEASED; urgency=medium
+piserial (1.4.6~0flat2) stable; urgency=medium
+
+  * change the default crypto chip as tpm
+
+ -- Lino Sanfilippo <l.sanfilippo@kunbus.com>  Mon, 02 Nov 2020 10:49:26 +0100
+
+piserial (1.4.6~0flat1) stable; urgency=medium
 
   * Add TPM support.
   * Add RevolutionPi Flat support.
