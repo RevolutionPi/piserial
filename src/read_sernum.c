@@ -91,6 +91,7 @@ int getSerNum(void)
 	int r, i;
 	uint8_t buf[10];
 	uint8_t cnt;
+	int err = 0;
 
 	fd = open("/dev/i2c-1", O_RDWR);
 	if (fd < 0)
@@ -135,8 +136,8 @@ int getSerNum(void)
 		if (cnt >= 20)
 		{
 			// chip did not respond
-			close(fd);
-			return -3;
+			err = -3;
+			break;
 		}
 
 		cnt = 0;
@@ -150,8 +151,8 @@ int getSerNum(void)
 		if (cnt >= 20)
 		{
 			// chip did not respond
-			close(fd);
-			return -4;
+			err = -4;
+			break;
 		}
 
 		for (cnt = 0; cnt < 4; cnt++)
@@ -161,8 +162,19 @@ int getSerNum(void)
 		usleep(1000);
 	}
 
+	if (err)
+		usleep(1000);
+	/* Finally send a 'sleep sequence" to put the device in low power mode.
+	   This will prevent subsequent commands from failing due to watchdog
+	   expiration. */
+	buf[0] = 0x01;
+	if (write(fd, buf, 1) != 1) {
+		if (!err)
+			err = -5;
+	}
+
 	close(fd);
-	return 0;
+	return err;
 }    			
 
 char *readSerNum(void)
