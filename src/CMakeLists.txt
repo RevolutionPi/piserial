@@ -1,9 +1,9 @@
-add_executable(piSerial piSerialNum.c read_sernum.c md5.c read_ek.c)
-target_link_libraries(piSerial tss2-esys tss2-tcti-device)
-install(TARGETS piSerial
+add_executable(revpi-serial piSerialNum.c read_sernum.c md5.c read_ek.c)
+target_link_libraries(revpi-serial tss2-esys tss2-tcti-device)
+install(TARGETS revpi-serial
   RUNTIME DESTINATION bin
 )
 
-install(PROGRAMS ks8851-set-mac revpi-factory-reset
+install(PROGRAMS ks8851-set-mac revpi-factory-reset piSerial
   DESTINATION sbin
 )
