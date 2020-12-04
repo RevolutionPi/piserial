@@ -1,0 +1,30 @@
+#!/bin/bash
+
+while getopts ":shp" OPTION ; do
+	case ${OPTION} in
+	s)
+		;;
+	h)
+		;;
+	p)
+		;;
+	*)
+		echo 'usage: piSerial [-s|-h|-p]
+
+-s show serial number
+-h show hostname
+-p show inital password
+no argument: show all'
+
+		exit 0
+		;;
+	esac
+done
+
+if grep -q "revpi-flat" "/proc/device-tree/compatible"; then
+	sudo /usr/bin/revpi-serial -t /dev/tpm0 "$@";
+else
+	/usr/bin/revpi-serial -c /dev/i2c-1 "$@";
+fi
+
+exit $?

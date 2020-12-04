@@ -51,16 +51,15 @@ if [ "$kernel" = 49 ] ; then
 fi
 
 piserial="/usr/bin/piSerial"
+piserial_args=""
 if [ "$ovl" == flat ]; then
 	if [ -c /dev/tpm0 ]; then
 		sn_exist=true
-		piserial_args="-t /dev/tpm0"
 	else
 		sn_exist=false
 	fi
 else
 	sn_exist=true
-	piserial_args=""
 fi
 
 if [ "$sn_exist" = true ]; then
