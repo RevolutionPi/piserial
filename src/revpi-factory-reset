@@ -50,7 +50,7 @@ if [ "$kernel" = 49 ] ; then
 	/bin/cp /boot/overlays/revpi-$ovl-dt-blob.dtbo /boot/dt-blob.bin 2>/dev/null
 fi
 
-piserial="/usr/bin/piSerial"
+piserial="/usr/sbin/piSerial"
 piserial_args=""
 if [ "$ovl" == flat ]; then
 	if [ -c /dev/tpm0 ]; then
