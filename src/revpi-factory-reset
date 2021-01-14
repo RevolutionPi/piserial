@@ -52,23 +52,31 @@ fi
 
 piserial="/usr/sbin/piSerial"
 if [ "$ovl" == flat ]; then
-	if [ -c /dev/tpm0 ]; then
-		sn_exist=true
-	else
-		sn_exist=false
-	fi
-else
-	sn_exist=true
+	#wait for dtoverlay revpi-flat, and tpm modules get probed
+	printf 'waiting for the tpm chip getting ready'
+	wait_time=60
+	for (( i=1; i<=wait_time; i++ ))
+	do
+		if [ "$i" = "$wait_time" ]; then
+			echo "timeout!"
+			echo "The factory reset is stopped here!"
+			exit 1
+		fi
+		if [ -c /dev/tpm0 ]; then
+			echo " ok"
+			break
+		fi
+		printf '%c' '.'
+		sleep 1
+	done
 fi
 
-if [ "$sn_exist" = true ]; then
-	pw=$($piserial -p)
-	echo -e "Password:\t$pw"
-	echo "pi:${pw}" | chpasswd
+pw=$($piserial -p)
+echo -e "Password:\t$pw"
+echo "pi:${pw}" | chpasswd
 
-	umount /etc/machine-id 2>/dev/null
-	$piserial -s | /usr/bin/sha256sum | cut -c1-32 > /etc/machine-id
-fi
+umount /etc/machine-id 2>/dev/null
+$piserial -s | /usr/bin/sha256sum | cut -c1-32 > /etc/machine-id
 
 hostname="RevPi$ser"
 echo -e "Hostname:\t$hostname"
