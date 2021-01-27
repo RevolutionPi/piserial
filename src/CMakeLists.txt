@@ -6,3 +6,6 @@ install(TARGETS piSerial
 install(PROGRAMS ks8851-set-mac revpi-factory-reset
   DESTINATION sbin
 )
+
+install(FILES revpi-factory-reset.sh
+  DESTINATION /etc/profile.d)
