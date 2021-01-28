@@ -1,3 +1,13 @@
+piserial (1.4.7-1) stretch; urgency=medium
+
+  [ Zhi Han ]
+  * piSerial: indent the code with Tab
+
+  [ Lino Sanfilippo ]
+  * Send sleep sequence after command transmission
+
+ -- Philipp Rosenberger <p.rosenberger@kunbus.com>  Thu, 28 Jan 2021 12:02:54 +0100
+
 piserial (1.4.6-1) stretch; urgency=medium
 
   * Use gbp to manage and build this package.
