@@ -1,3 +1,9 @@
+piserial (1.4.7-2) stretch; urgency=medium
+
+  * Use debhelper compat file again
+
+ -- Philipp Rosenberger <p.rosenberger@kunbus.com>  Fri, 29 Jan 2021 10:52:34 +0100
+
 piserial (1.4.7-1) stretch; urgency=medium
 
   [ Zhi Han ]
