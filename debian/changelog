@@ -1,3 +1,10 @@
+piserial (1.7.0-1) stretch; urgency=medium
+
+  * Bump version as a faulty 1.6.0-1 version was uploaded to the package
+    repository by accident
+
+ -- Philipp Rosenberger <p.rosenberger@kunbus.com>  Fri, 29 Jan 2021 13:09:52 +0100
+
 piserial (1.4.7-2) stretch; urgency=medium
 
   * Use debhelper compat file again
