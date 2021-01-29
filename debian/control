@@ -1,7 +1,7 @@
 Source: piserial
 Section: contrib/electronics
 Priority: extra
-Build-Depends: debhelper-compat (= 10), cmake
+Build-Depends: debhelper (>= 10), cmake
 Standards-Version: 3.9.8
 Maintainer: Kunbus <admin@kunbus.de>
 Homepage: https://revolution.kunbus.com/
