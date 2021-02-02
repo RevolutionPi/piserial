@@ -49,8 +49,6 @@ char *getHostname(void)
 	sSalt[18] = 0xf2;
 	sSalt[5] = 0xd1;
 
-	getSerNum();
-
 	sSalt[25] = 0x40;
 	sSalt[27] = i8uSernum[5];
 	sSalt[14] = 0x36;
@@ -93,8 +91,6 @@ char *getPassword(void)
 	static char sPassword[7];
 	char *sCode32 = "hancvo714xqwelm289rtz0356sdfgybp";
 	uint8_t i8uSalt[] = { 0x81, 0xae, 0xf2, 0x9d, 0x47, 0xd3 };
-
-	getSerNum();
 
 	for (cnt = 0; cnt < 6; cnt++)
 	{
