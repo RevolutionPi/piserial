@@ -1,4 +1,4 @@
-add_executable(revpi-serial revpi-serial.c)
+add_executable(revpi-serial revpi-serial.c atecc508a.c)
 install(TARGETS revpi-serial
   RUNTIME DESTINATION sbin
 )
