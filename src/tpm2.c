@@ -113,8 +113,8 @@ unsigned int read_ek(const char *dev_node, char *buf, int len)
 			.unique = {.rsa = {.size = 256}}
 		},
 	};
-	TPM2B_AUTH authValue = { .size = 0, .buffer = {} };
-	TPM2B_DATA outsideInfo = { .size = 0, .buffer = {} };
+	TPM2B_AUTH authValue = { .size = 0, .buffer = {0} };
+	TPM2B_DATA outsideInfo = { .size = 0, .buffer = {0} };
 	TPML_PCR_SELECTION creationPCR = { .count = 0 };
 	ESYS_TR session_handle = ESYS_TR_NONE;
 	TPMT_SYM_DEF symmetric = {.algorithm = TPM2_ALG_NULL};
