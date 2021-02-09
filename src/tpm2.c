@@ -7,11 +7,12 @@
 #include <tss2/tss2_tcti.h>
 #include <tss2/tss2_tcti_device.h>
 
+#include "debug.h"
+
 #define TSSWG_INTEROP 1
 #define TSS_SAPI_FIRST_FAMILY 2
 #define TSS_SAPI_FIRST_LEVEL 1
 #define TSS_SAPI_FIRST_VERSION 108
-#define LOG_ERROR printf
 
 static TSS2_RC generate_tcti(const char * const dev_path, TSS2_TCTI_CONTEXT **tcti_ctx)
 {
@@ -21,20 +22,20 @@ static TSS2_RC generate_tcti(const char * const dev_path, TSS2_TCTI_CONTEXT **tc
 	/*to get the size of TSS2_TCTI_DEVICE_CONTEXT */
 	rc = Tss2_Tcti_Device_Init(NULL, &size, NULL);
 	if (rc != TSS2_RC_SUCCESS) {
-		LOG_ERROR("get the size of TSS2_TCTI_DEVICE_CONTEXT failed\n");
+		err_print("get the size of TSS2_TCTI_DEVICE_CONTEXT failed\n");
 		goto err;
 	}
 
 	*tcti_ctx = (TSS2_TCTI_CONTEXT*) calloc(1, size);
 	if (*tcti_ctx == NULL) {
-		LOG_ERROR("get memory for tcti context failed\n");
+		err_print("get memory for tcti context failed\n");
 		rc = TSS2_BASE_RC_GENERAL_FAILURE;
 		goto err;
 	}
 
 	rc = Tss2_Tcti_Device_Init(*tcti_ctx, &size, dev_path);
 	if (rc != TSS2_RC_SUCCESS) {
-		LOG_ERROR("Tss2_Tcti_Device_Init failed\n");
+		err_print("Tss2_Tcti_Device_Init failed\n");
 		goto err_tcti;
 	}
 	return TSS2_RC_SUCCESS;
@@ -129,28 +130,28 @@ static unsigned int read_ek(const char *const dev_path, uint8_t * const serial)
 
 	rc = generate_tcti(dev_path, &tcti_context);
 	if (rc != TSS2_RC_SUCCESS) {
-		LOG_ERROR("generate_tcti FAILED!\n");
+		err_print("generate_tcti FAILED!\n");
 		goto ret;
 	}
 	rc = Esys_Initialize(&esys_context, tcti_context, &abiVersion);
 	if (rc != TSS2_RC_SUCCESS) {
-		LOG_ERROR("Esys_Initialize FAILED! Response Code : 0x%x", rc);
+		err_print("Esys_Initialize FAILED! Response Code : 0x%x", rc);
 		goto ret_tcti;
 	}
 	rc = Esys_Startup(esys_context, TPM2_SU_CLEAR);
 	if (rc != TSS2_RC_SUCCESS && rc != TPM2_RC_INITIALIZE) {
-		LOG_ERROR("Esys_Startup FAILED! Response Code : 0x%x", rc);
+		err_print("Esys_Startup FAILED! Response Code : 0x%x", rc);
 		goto ret_esys;
 	}
 	rc = Esys_SetTimeout(esys_context, TSS2_TCTI_TIMEOUT_BLOCK);
 	if (rc != TSS2_RC_SUCCESS) {
-		LOG_ERROR("Esys_SetTimeout FAILED! Response Code : 0x%x", rc);
+		err_print("Esys_SetTimeout FAILED! Response Code : 0x%x", rc);
 		goto ret_esys;
 	}
 
 	rc = Esys_TR_SetAuth(esys_context, ESYS_TR_RH_OWNER, &authValue);
 	if (rc != TSS2_RC_SUCCESS) {
-		LOG_ERROR("Esys_TR_SetAuth FAILED! Response Code : 0x%x", rc);
+		err_print("Esys_TR_SetAuth FAILED! Response Code : 0x%x", rc);
 		goto ret_esys;
 	}
 	/*clear*/
@@ -161,7 +162,7 @@ static unsigned int read_ek(const char *const dev_path, uint8_t * const serial)
 			ESYS_TR_NONE);
 
 	if (rc != TSS2_RC_SUCCESS) {
-		LOG_ERROR("Esys_Clear FAILED! Response Code : 0x%x", rc);
+		err_print("Esys_Clear FAILED! Response Code : 0x%x", rc);
 		goto ret_esys;
 	}
 
@@ -177,7 +178,7 @@ static unsigned int read_ek(const char *const dev_path, uint8_t * const serial)
 			TPM2_ALG_SHA256,
 			&session_handle);
 	if (rc != TSS2_RC_SUCCESS) {
-		LOG_ERROR("Esys_StartAuthSession FAILED! Response : 0x%x", rc);
+		err_print("Esys_StartAuthSession FAILED! Response : 0x%x", rc);
 		goto ret_esys;
 	}
 
@@ -197,7 +198,7 @@ static unsigned int read_ek(const char *const dev_path, uint8_t * const serial)
 			&creationHash,
 			&creationTicket);
 	if (rc != TSS2_RC_SUCCESS) {
-		LOG_ERROR("Esys_CreatePrimary FAILED! Response Code : 0x%x", rc);
+		err_print("Esys_CreatePrimary FAILED! Response Code : 0x%x", rc);
 		goto ret_flush;
 	}
 
@@ -207,7 +208,7 @@ static unsigned int read_ek(const char *const dev_path, uint8_t * const serial)
 ret_flush:
 	rc = Esys_FlushContext(esys_context, session_handle);
 	if (rc != TSS2_RC_SUCCESS) {
-		LOG_ERROR("Esys_FlushContext FAILED! Response Code : 0x%x", rc);
+		err_print("Esys_FlushContext FAILED! Response Code : 0x%x", rc);
 		goto ret_esys;
 	}
 ret_esys:
