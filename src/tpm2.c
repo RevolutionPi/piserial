@@ -13,7 +13,7 @@
 #define TSS_SAPI_FIRST_VERSION 108
 #define LOG_ERROR printf
 
-TSS2_RC generate_tcti(const char *dev_node, TSS2_TCTI_CONTEXT **tcti_ctx)
+static TSS2_RC generate_tcti(const char * const dev_path, TSS2_TCTI_CONTEXT **tcti_ctx)
 {
 	size_t size;
 	TSS2_RC rc;
@@ -32,7 +32,7 @@ TSS2_RC generate_tcti(const char *dev_node, TSS2_TCTI_CONTEXT **tcti_ctx)
 		goto err;
 	}
 
-	rc = Tss2_Tcti_Device_Init(*tcti_ctx, &size, dev_node);
+	rc = Tss2_Tcti_Device_Init(*tcti_ctx, &size, dev_path);
 	if (rc != TSS2_RC_SUCCESS) {
 		LOG_ERROR("Tss2_Tcti_Device_Init failed\n");
 		goto err_tcti;
@@ -45,7 +45,7 @@ err:
 	return rc;
 }
 
-void free_tcti(TSS2_TCTI_CONTEXT *ctx)
+static void free_tcti(TSS2_TCTI_CONTEXT *ctx)
 {
 	if (ctx) {
 		Tss2_Tcti_Finalize(ctx);
@@ -54,8 +54,9 @@ void free_tcti(TSS2_TCTI_CONTEXT *ctx)
 	return;
 }
 
-unsigned int read_ek(const char *dev_node, char *buf, int len)
+static unsigned int read_ek(const char *const dev_path, uint8_t * const serial)
 {
+	const unsigned int len = 8;
 	TSS2_TCTI_CONTEXT *tcti_context = NULL;
 	ESYS_CONTEXT *esys_context = NULL;
 	TSS2_ABI_VERSION abiVersion = {TSSWG_INTEROP,
@@ -126,7 +127,7 @@ unsigned int read_ek(const char *dev_node, char *buf, int len)
 		goto ret;
 	}
 
-	rc = generate_tcti(dev_node, &tcti_context);
+	rc = generate_tcti(dev_path, &tcti_context);
 	if (rc != TSS2_RC_SUCCESS) {
 		LOG_ERROR("generate_tcti FAILED!\n");
 		goto ret;
@@ -201,7 +202,7 @@ unsigned int read_ek(const char *dev_node, char *buf, int len)
 	}
 
 	/*get ek pub from outPublic*/
-	memcpy(buf, outPublic->publicArea.unique.rsa.buffer, len);
+	memcpy(serial, outPublic->publicArea.unique.rsa.buffer, len);
 
 ret_flush:
 	rc = Esys_FlushContext(esys_context, session_handle);
@@ -215,4 +216,11 @@ ret_tcti:
 	free_tcti(tcti_context);
 ret:
 	return rc;
+}
+
+int tpm2_serial(const char *const dev_path, uint8_t * const serial)
+{
+	unsigned int rc;
+	rc = read_ek(dev_path, serial);
+	return (rc != 0) ? -1 : 0;
 }
