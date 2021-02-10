@@ -40,7 +40,7 @@ TSS2_RC generate_tcti(const char *dev_node, TSS2_TCTI_CONTEXT **tcti_ctx)
 	return TSS2_RC_SUCCESS;
 
 err_tcti:
-	free(tcti_ctx);
+	free(*tcti_ctx);
 err:
 	return rc;
 }
