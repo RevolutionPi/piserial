@@ -1,10 +1,10 @@
 .\"                                      Hey, EMACS: -*- nroff -*-
-.\" (C) Copyright 2016-2017 Kunbus GmbH
+.\" (C) Copyright 2016-2021 Kunbus GmbH
 .\"
 .\" First parameter, NAME, should be all caps
 .\" Second parameter, SECTION, should be 1-8, maybe w/ subsection
 .\" other parameters are allowed: see man(7), man(1)
-.TH piSerial 1 "January 30 2017"
+.TH piSerial 1 "February 16, 2021"
 .\" Please adjust this date whenever revising the manpage.
 .\"
 .\" Some roff macros, for reference:
@@ -24,22 +24,22 @@ piSerial \- retrieve the RevPi serial number
 .RI [ options ]
 .SH DESCRIPTION
 .B piSerial
-allows retrieving the RevPi serial number from its Atmel CryptoAuth
-chip and generating the unique factory-default hostname and password.
-Revolution Pi is a set of IoT products based on the Raspberry Pi and
+allows retrieving the RevPi's serial number and generating the factory-default
+password. Revolution Pi is a set of IoT products based on the Raspberry Pi and
 geared towards industrial usage.
 .SH OPTIONS
-.TP
-.B \-s
-Show serial number.
-.TP
-.B \-h
-Show hostname.
 .TP
 .B \-p
 Show initial password.
 .TP
-When invoked without arguments, \fBpiSerial\fP will show all three values.
+.B \-s
+Show serial number.
+.TP
+.B \-v
+Print the version and exit.
+.TP
+If no print option is specified both, the serial number and the password are
+printed.
 .SH SEE ALSO
 For more information on Revolution Pi visit
 .IR https://revolutionpi.kunbus.com

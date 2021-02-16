@@ -1,30 +1,34 @@
 #!/bin/bash
+#
+# (C) Copyright 2016-2021 Kunbus GmbH
+#
 
-while getopts ":shp" OPTION ; do
+function usage {
+	echo 'usage: piSerial [-p|-s|-v]
+
+  -p print the generated password
+  -s print the serial number
+  -v show revpi-piserial version and exit
+If no option is specified the serial number and password are printed.'
+}
+
+while getopts ":spv" OPTION ; do
 	case ${OPTION} in
 	s)
 		;;
-	h)
-		;;
 	p)
 		;;
+	v)
+		;;
 	*)
-		echo 'usage: piSerial [-s|-h|-p]
-
--s show serial number
--h show hostname
--p show inital password
-no argument: show all'
-
-		exit 0
+		usage
+		exit 1;
 		;;
 	esac
 done
 
 if grep -q "revpi-flat" "/proc/device-tree/compatible"; then
-	sudo /usr/bin/revpi-serial -t /dev/tpm0 "$@";
+	exec sudo /usr/sbin/revpi-serial -t /dev/tpm0 "$@";
 else
-	/usr/bin/revpi-serial -c /dev/i2c-1 "$@";
+	exec sudo /usr/sbin/revpi-serial -c /dev/i2c-1 "$@";
 fi
-
-exit $?
