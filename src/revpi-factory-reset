@@ -31,8 +31,7 @@ last_part_start="$(/bin/cat "/sys/block/$dev/$last_part/start")"
 last_part_size="$(/bin/cat "/sys/block/$dev/$last_part/size")"
 last_part_max="$(("$total_size" - "$last_part_start"))"
 if [ "$last_part_size" -lt "$last_part_max" ] ; then
-	/sbin/sfdisk -q --dump "/dev/$dev" | /bin/sed -r -e "\$!n
-\$s/size=[^,]+/size=$last_part_max/" | /sbin/sfdisk -q -f --no-reread --no-tell-kernel "/dev/$dev"
+	parted "/dev/$dev" resizepart 2 $((total_size-1))s
 	/sbin/partprobe "/dev/$dev"
 	/sbin/resize2fs "/dev/$last_part"
 fi
