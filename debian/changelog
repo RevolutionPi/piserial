@@ -1,4 +1,4 @@
-piserial (2.0.0~alpha2-1) UNRELEASED; urgency=medium
+piserial (2.0.0~alpha2-1) buster; urgency=medium
 
   * This is a complete rewrite of piserial
   * Add TPM support
@@ -6,7 +6,7 @@ piserial (2.0.0~alpha2-1) UNRELEASED; urgency=medium
   * Remove hostname from piserial
   * revpi-factory-reset: Use parted instead of sfdisk.
 
- -- Philipp Rosenberger <p.rosenberger@kunbus.com>  Fri, 26 Feb 2021 10:52:14 +0100
+ -- Philipp Rosenberger <p.rosenberger@kunbus.com>  Fri, 26 Feb 2021 12:10:48 +0100
 
 piserial (1.4.6~0flat2) stable; urgency=medium
 
