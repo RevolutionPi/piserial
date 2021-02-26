@@ -113,7 +113,7 @@ if [[ $(readlink /proc/$$/fd/0) == /dev/tty* ]] ; then
 	/sbin/ifconfig eth0 up
 	if [[ "$ovl" =~ ^(compact|connect|flat)$ ]] ; then
 		/sbin/ifconfig eth1 down
-		/sbin/ifconfig eth1 hw ether "$mac"
+		/sbin/ifconfig eth1 hw ether "$mac_hi$mac_lo1"
 		/sbin/ifconfig eth1 up
 	fi
 else
