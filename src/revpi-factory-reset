@@ -84,7 +84,7 @@ echo "$hostname" > /etc/hostname
 /bin/hostname "$hostname"
 
 # remove existing entries before writing new ones
-/bin/sed -r -i -e "/^dtparam=eth[0-9]_mac_/d" /boot/config.txt
+/bin/sed -r -i -e "/^dtparam=eth|wlan[0-9]_mac_/d" /boot/config.txt
 mac_hi="${mac:0:2}${mac:2:2}${mac:4:2}${mac:6:2}"
 mac_lo="${mac:8:2}${mac:10:2}"
 echo -e "MAC Address eth0:\t$mac_hi$mac_lo"
@@ -96,9 +96,16 @@ if [[ "$ovl" =~ ^(compact|connect|flat)$ ]] ; then
 	echo -e "MAC Address eth1:\t$mac_hi$mac_lo1"
 	echo "dtparam=eth1_mac_hi=0x${mac_hi}" >> /boot/config.txt
 	echo "dtparam=eth1_mac_lo=0x${mac_lo1}" >> /boot/config.txt
-fi
-if [[ "$ovl" =~ ^compact$ ]] ; then
-	/usr/sbin/ks8851-set-mac eth1 "$mac_hi$mac_lo1"
+	if [[ "$ovl" =~ ^compact$ ]] ; then
+		/usr/sbin/ks8851-set-mac eth1 "$mac_hi$mac_lo1"
+	fi
+	if [[ "$ovl" =~ ^flat$ ]] ; then
+		mac_lo2=$(( 0x${mac_lo1} + 1))
+		mac_lo2=$(/usr/bin/printf "%.4hx" "${mac_lo2}")
+		echo -e "MAC Address wlan0:\t$mac_hi$mac_lo2"
+		echo "dtparam=wlan0_mac_hi=0x${mac_hi}" >> /boot/config.txt
+		echo "dtparam=wlan0_mac_lo=0x${mac_lo2}" >> /boot/config.txt
+	fi
 fi
 if [ "$kernel" = 44 ] ; then
 	mac_cmdline="${mac:0:2}:${mac:2:2}:${mac:4:2}:${mac:6:2}:${mac:8:2}:${mac:10:2}"
@@ -115,6 +122,11 @@ if [[ $(readlink /proc/$$/fd/0) == /dev/tty* ]] ; then
 		/sbin/ifconfig eth1 down
 		/sbin/ifconfig eth1 hw ether "$mac_hi$mac_lo1"
 		/sbin/ifconfig eth1 up
+		if [[ "$ovl" =~ ^flat$ ]] ; then
+			/sbin/ifconfig wlan0 down
+			/sbin/ifconfig wlan0 hw ether "$mac_hi$mac_lo2"
+			/sbin/ifconfig wlan0 up
+		fi
 	fi
 else
 	echo "Reboot to activate the MAC Address"
