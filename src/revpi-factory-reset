@@ -105,6 +105,9 @@ if [[ "$ovl" =~ ^(compact|connect|flat)$ ]] ; then
 		echo -e "MAC Address wlan0:\t$mac_hi$mac_lo2"
 		echo "dtparam=wlan0_mac_hi=0x${mac_hi}" >> /boot/config.txt
 		echo "dtparam=wlan0_mac_lo=0x${mac_lo2}" >> /boot/config.txt
+		ln -s /lib/systemd/system/hdmi-disable.service /etc/systemd/system/multi-user.target.wants/hdmi-disable.service
+		systemctl start hdmi-disable
+		echo "HDMI disabled. Use 'sudo systemctl disable hdmi-disable' and reboot to reenable HDMI."
 	fi
 fi
 if [ "$kernel" = 44 ] ; then
