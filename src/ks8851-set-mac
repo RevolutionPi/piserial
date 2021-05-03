@@ -1,4 +1,9 @@
 #!/bin/bash
+#
+# SPDX-License-Identifier: GPL-2.0
+#
+# Copyright: 2021 Kunbus GmbH
+#
 
 iface="$1"
 mac="$2"

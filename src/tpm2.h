@@ -1,3 +1,9 @@
+// SPDX-License-Identifier: GPL-2.0
+
+/*
+ * Copyright: 2021 KUNBUS GmbH
+ */
+
 #ifndef TPM2_H
 #define TPM2_h
 

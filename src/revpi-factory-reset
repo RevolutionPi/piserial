@@ -1,4 +1,9 @@
 #!/bin/bash
+#
+# SPDX-License-Identifier: GPL-2.0
+#
+# Copyright: 2021 Kunbus GmbH
+#
 # resize root partition to fit the eMMC if it has more than 3.9 GByte;
 # reset dtoverlay, password of user pi, machine-id, hostname, FQDN and
 # MAC address of a RevPi to factory defaults
