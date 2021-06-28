@@ -48,7 +48,7 @@ else
 fi
 
 if [ "$kernel" = 49 ] ; then
-	/bin/sed -r -i -e "/^dtoverlay=revpi-(compact|connect|core|flat)/d" /boot/config.txt
+	/bin/sed --follow-symlinks -r -i -e "/^dtoverlay=revpi-(compact|connect|core|flat)/d" /boot/config.txt
 	echo "dtoverlay=revpi-$ovl" >> /boot/config.txt
 	/usr/bin/dtoverlay "revpi-$ovl"
 	/bin/cp "/boot/overlays/revpi-$ovl-dt-blob.dtbo" /boot/dt-blob.bin 2>/dev/null
@@ -84,12 +84,12 @@ $piserial -s | /usr/bin/sha256sum | cut -c1-32 > /etc/machine-id
 
 hostname="RevPi$ser"
 echo -e "Hostname:\t$hostname"
-/bin/sed -r -i -e "s/^(127\.0\.1\.1[[:blank:]]+).*/\1$hostname/" /etc/hosts
+/bin/sed --follow-symlinks -r -i -e "s/^(127\.0\.1\.1[[:blank:]]+).*/\1$hostname/" /etc/hosts
 echo "$hostname" > /etc/hostname
 /bin/hostname "$hostname"
 
 # remove existing entries before writing new ones
-/bin/sed -r -i -e "/^dtparam=eth|wlan[0-9]_mac_/d" /boot/config.txt
+/bin/sed --follow-symlinks -r -i -e "/^dtparam=eth|wlan[0-9]_mac_/d" /boot/config.txt
 mac_hi="${mac:0:2}${mac:2:2}${mac:4:2}${mac:6:2}"
 mac_lo="${mac:8:2}${mac:10:2}"
 echo -e "MAC Address eth0:\t$mac_hi$mac_lo"
@@ -117,7 +117,7 @@ if [[ "$ovl" =~ ^(compact|connect|flat)$ ]] ; then
 fi
 if [ "$kernel" = 44 ] ; then
 	mac_cmdline="${mac:0:2}:${mac:2:2}:${mac:4:2}:${mac:6:2}:${mac:8:2}:${mac:10:2}"
-	/bin/sed -r -i -e "s/ *smsc95xx.macaddr=[^ ]*//" -e "s/$/ smsc95xx.macaddr=$mac_cmdline/" /boot/cmdline.txt
+	/bin/sed --follow-symlinks -r -i -e "s/ *smsc95xx.macaddr=[^ ]*//" -e "s/$/ smsc95xx.macaddr=$mac_cmdline/" /boot/cmdline.txt
 fi
 
 # activate MAC address immediately only if logged in on the console,
