@@ -21,7 +21,7 @@
 #include "debug.h"
 #include "tpm2.h"
 
-#define PISERIAL_VERSION "2.0.0"
+#define PISERIAL_VERSION "2.0.1"
 
 const char lock_path[] = "/var/run/piserial.lock";
 
