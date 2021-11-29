@@ -1,3 +1,10 @@
+#!/bin/bash
+#
+# SPDX-License-Identifier: GPL-2.0
+#
+# Copyright: 2021 Kunbus GmbH
+#
+
 if [ "$USER" != pi ] ; then
 	return
 fi

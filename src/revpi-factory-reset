@@ -1,4 +1,9 @@
 #!/bin/bash
+#
+# SPDX-License-Identifier: GPL-2.0
+#
+# Copyright: 2021 Kunbus GmbH
+#
 # resize root partition to fit the eMMC if it has more than 3.9 GByte;
 # reset dtoverlay, password of user pi, machine-id, hostname, FQDN and
 # MAC address of a RevPi to factory defaults
@@ -43,7 +48,7 @@ else
 fi
 
 if [ "$kernel" = 49 ] ; then
-	/bin/sed -r -i -e "/^dtoverlay=revpi-(compact|connect|core|flat)/d" /boot/config.txt
+	/bin/sed --follow-symlinks -r -i -e "/^dtoverlay=revpi-(compact|connect|core|flat)/d" /boot/config.txt
 	echo "dtoverlay=revpi-$ovl" >> /boot/config.txt
 	/usr/bin/dtoverlay "revpi-$ovl"
 	/bin/cp "/boot/overlays/revpi-$ovl-dt-blob.dtbo" /boot/dt-blob.bin 2>/dev/null
@@ -79,12 +84,12 @@ $piserial -s | /usr/bin/sha256sum | cut -c1-32 > /etc/machine-id
 
 hostname="RevPi$ser"
 echo -e "Hostname:\t$hostname"
-/bin/sed -r -i -e "s/^(127\.0\.1\.1[[:blank:]]+).*/\1$hostname/" /etc/hosts
+/bin/sed --follow-symlinks -r -i -e "s/^(127\.0\.1\.1[[:blank:]]+).*/\1$hostname/" /etc/hosts
 echo "$hostname" > /etc/hostname
 /bin/hostname "$hostname"
 
 # remove existing entries before writing new ones
-/bin/sed -r -i -e "/^dtparam=eth|wlan[0-9]_mac_/d" /boot/config.txt
+/bin/sed --follow-symlinks -r -i -e "/^dtparam=eth[0-9]_mac_/d" /boot/config.txt
 mac_hi="${mac:0:2}${mac:2:2}${mac:4:2}${mac:6:2}"
 mac_lo="${mac:8:2}${mac:10:2}"
 echo -e "MAC Address eth0:\t$mac_hi$mac_lo"
@@ -100,11 +105,6 @@ if [[ "$ovl" =~ ^(compact|connect|flat)$ ]] ; then
 		/usr/sbin/ks8851-set-mac eth1 "$mac_hi$mac_lo1"
 	fi
 	if [[ "$ovl" =~ ^flat$ ]] ; then
-		mac_lo2=$(( 0x${mac_lo1} + 1))
-		mac_lo2=$(/usr/bin/printf "%.4hx" "${mac_lo2}")
-		echo -e "MAC Address wlan0:\t$mac_hi$mac_lo2"
-		echo "dtparam=wlan0_mac_hi=0x${mac_hi}" >> /boot/config.txt
-		echo "dtparam=wlan0_mac_lo=0x${mac_lo2}" >> /boot/config.txt
 		ln -s /lib/systemd/system/hdmi-disable.service /etc/systemd/system/multi-user.target.wants/hdmi-disable.service
 		systemctl start hdmi-disable
 		echo "HDMI disabled. Use 'sudo systemctl disable hdmi-disable' and reboot to reenable HDMI."
@@ -112,7 +112,7 @@ if [[ "$ovl" =~ ^(compact|connect|flat)$ ]] ; then
 fi
 if [ "$kernel" = 44 ] ; then
 	mac_cmdline="${mac:0:2}:${mac:2:2}:${mac:4:2}:${mac:6:2}:${mac:8:2}:${mac:10:2}"
-	/bin/sed -r -i -e "s/ *smsc95xx.macaddr=[^ ]*//" -e "s/$/ smsc95xx.macaddr=$mac_cmdline/" /boot/cmdline.txt
+	/bin/sed --follow-symlinks -r -i -e "s/ *smsc95xx.macaddr=[^ ]*//" -e "s/$/ smsc95xx.macaddr=$mac_cmdline/" /boot/cmdline.txt
 fi
 
 # activate MAC address immediately only if logged in on the console,
@@ -125,11 +125,6 @@ if [[ $(readlink /proc/$$/fd/0) == /dev/tty* ]] ; then
 		/sbin/ifconfig eth1 down
 		/sbin/ifconfig eth1 hw ether "$mac_hi$mac_lo1"
 		/sbin/ifconfig eth1 up
-		if [[ "$ovl" =~ ^flat$ ]] ; then
-			/sbin/ifconfig wlan0 down
-			/sbin/ifconfig wlan0 hw ether "$mac_hi$mac_lo2"
-			/sbin/ifconfig wlan0 up
-		fi
 	fi
 else
 	echo "Reboot to activate the MAC Address"

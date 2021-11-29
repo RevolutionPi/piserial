@@ -1,3 +1,9 @@
+// SPDX-License-Identifier: GPL-2.0
+
+/*
+ * Copyright: 2021 KUNBUS GmbH
+ */
+
 #include <errno.h>
 #include <fcntl.h>
 #include <getopt.h>
@@ -15,7 +21,7 @@
 #include "debug.h"
 #include "tpm2.h"
 
-#define PISERIAL_VERSION "2.0.0"
+#define PISERIAL_VERSION "2.0.1"
 
 const char lock_path[] = "/var/run/piserial.lock";
 
