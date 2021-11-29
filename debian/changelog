@@ -1,3 +1,18 @@
+piserial (2.0.1-1) buster; urgency=medium
+
+  [ Frank Pavlic ]
+  * add GPL-2.0 license to piserial
+  * Remove README.md from repository
+
+  [ Romain Létendart ]
+  * revpi-factory-reset: Follow symlinks with sed
+
+  [ Philipp Rosenberger ]
+  * revpi-factory-reset: Remove MAC addr handling for wlan on Flat
+  * Bump version to 2.0.1
+
+ -- Philipp Rosenberger <p.rosenberger@kunbus.com>  Mon, 29 Nov 2021 15:59:46 +0100
+
 piserial (2.0.0-1) buster; urgency=medium
 
   [ Lino Sanfilippo ]
