@@ -1,3 +1,9 @@
+piserial (2.0.1-2) buster; urgency=medium
+
+  * Update gbp.conf
+
+ -- Philipp Rosenberger <p.rosenberger@kunbus.com>  Tue, 30 Nov 2021 11:34:15 +0100
+
 piserial (2.0.1-1) buster; urgency=medium
 
   [ Frank Pavlic ]
