@@ -118,13 +118,13 @@ fi
 # activate MAC address immediately only if logged in on the console,
 # not via ssh, as the interface has to be taken down
 if [[ $(readlink /proc/$$/fd/0) == /dev/tty* ]] ; then
-	/sbin/ifconfig eth0 down
-	/sbin/ifconfig eth0 hw ether "$mac"
-	/sbin/ifconfig eth0 up
+	ip link set eth0 down
+	ip link set eth0 address "$mac"
+	ip link set eth0 up
 	if [[ "$ovl" =~ ^(compact|connect|flat)$ ]] ; then
-		/sbin/ifconfig eth1 down
-		/sbin/ifconfig eth1 hw ether "$mac_hi$mac_lo1"
-		/sbin/ifconfig eth1 up
+		ip link set eth1 down
+		ip link set eth1 address "$mac_hi$mac_lo1"
+		ip link set eth1 up
 	fi
 else
 	echo "Reboot to activate the MAC Address"
