@@ -1,3 +1,9 @@
+piserial (2.0.2-2) buster; urgency=medium
+
+  * Remove the Depends of net-tools
+
+ -- Zhi Han <z.han@kunbus.com>  Tue, 01 Mar 2022 11:08:59 +0100
+
 piserial (2.0.2-1) buster; urgency=medium
 
   * Replace command ifconfig with ip
