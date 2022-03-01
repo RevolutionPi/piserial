@@ -14,7 +14,7 @@ Depends: ${shlibs:Depends},
  parted,
  e2fsprogs,
  libraspberrypi-bin,
- net-tools,
+ iproute2,
  sudo
 Description: Revolution Pi serial number utility
  Retrieve the RevPi's serial number and generate the factory-default password.
