@@ -20,6 +20,7 @@ while [ ! -r /home/pi/.revpi-factory-reset ] ; do
 		compact "Revolution Pi Compact" \
 		connect "Revolution Pi Connect" \
 		core "Revolution Pi Core" \
+		core-se "Revolution Pi Core SE" \
 		flat "Revolution Pi Flat" \
 		3>&1 1>&2 2>&3)
 
