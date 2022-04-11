@@ -15,8 +15,8 @@ mac="${mac,,}"		# downcase
 mac="${mac//-/}"	# remove dashes
 mac="${mac//:/}"	# remove colons
 
-full_devicetype_list="compact|connect|core|flat|core-se"	# all suported devices
-witheth1_devicetype_list="compact|connect|flat"	# devices with "eth1"
+full_devicetype_list="compact|connect|core|flat|core-se|connect-se"	# all suported devices
+witheth1_devicetype_list="compact|connect|flat|connect-se"	# devices with "eth1"
 
 if [ "$#" != 3 ] ||
    ! [[ "$ovl" =~ ^($full_devicetype_list)$ ]] ||
