@@ -19,6 +19,7 @@ while [ ! -r /home/pi/.revpi-factory-reset ] ; do
 	ovl=$(whiptail --nocancel --notags --title "PRODUCT TYPE" --menu "$msg" 0 0 0 \
 		compact "Revolution Pi Compact" \
 		connect "Revolution Pi Connect" \
+		connect-se "Revolution Pi Connect SE" \
 		core "Revolution Pi Core" \
 		core-se "Revolution Pi Core SE" \
 		flat "Revolution Pi Flat" \
