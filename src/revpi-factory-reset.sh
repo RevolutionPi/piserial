@@ -16,7 +16,7 @@ export NEWT_COLORS='root=,black entry=white,black'
 while [ ! -r /home/pi/.revpi-factory-reset ] ; do
 	clear
 	msg="Please select the Product Type:"
-	ovl=$(whiptail --nocancel --notags --title "PRODUCT TYPE" --menu "$msg" 0 0 0 \
+	ovl=$(whiptail --notags --title "PRODUCT TYPE" --menu "$msg" 0 0 0 \
 		compact "Revolution Pi Compact" \
 		connect "Revolution Pi Connect" \
 		connect-se "Revolution Pi Connect SE" \
@@ -24,12 +24,21 @@ while [ ! -r /home/pi/.revpi-factory-reset ] ; do
 		core-se "Revolution Pi Core SE" \
 		flat "Revolution Pi Flat" \
 		3>&1 1>&2 2>&3)
+	if [ "$?" == "1" ]; then
+		return
+	fi
 
 	msg="Please enter the Serial Number on the front plate of your RevPi:"
-	ser=$(whiptail --nocancel --title "SERIAL NUMBER" --inputbox "$msg" 0 0 3>&1 1>&2 2>&3)
+	ser=$(whiptail --title "SERIAL NUMBER" --inputbox "$msg" 0 0 3>&1 1>&2 2>&3)
+	if [ "$?" == "1" ]; then
+		return
+	fi
 
 	msg="Please enter the MAC Address on the front plate of your RevPi:"
-	mac=$(whiptail --nocancel --title "MAC ADDRESS" --inputbox "$msg" 0 0 "C83E-A7" 3>&1 1>&2 2>&3)
+	mac=$(whiptail --title "MAC ADDRESS" --inputbox "$msg" 0 0 "C83E-A7" 3>&1 1>&2 2>&3)
+	if [ "$?" == "1" ]; then
+		return
+	fi
 
 	# this creates /home/pi/.revpi-factory-reset on success:
 	/usr/bin/sudo /usr/sbin/revpi-factory-reset "$ovl" "$ser" "$mac" 2>/dev/null
