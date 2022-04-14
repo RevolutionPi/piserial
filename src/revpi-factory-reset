@@ -122,12 +122,14 @@ fi
 # activate MAC address immediately only if logged in on the console,
 # not via ssh, as the interface has to be taken down
 if [[ $(readlink /proc/$$/fd/0) == /dev/tty* ]] ; then
+	mac_colons="${mac:0:2}:${mac:2:2}:${mac:4:2}:${mac:6:2}:${mac:8:2}:${mac:10:2}"
 	ip link set eth0 down
-	ip link set eth0 address "$mac"
+	ip link set eth0 address "$mac_colons"
 	ip link set eth0 up
 	if [[ "$ovl" =~ ^($witheth1_devicetype_list)$ ]] ; then
+		mac_colons1="${mac1:0:2}:${mac1:2:2}:${mac1:4:2}:${mac1:6:2}:${mac1:8:2}:${mac1:10:2}"
 		ip link set eth1 down
-		ip link set eth1 address "$mac1"
+		ip link set eth1 address "$mac_colons1"
 		ip link set eth1 up
 	fi
 else
