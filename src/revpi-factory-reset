@@ -99,13 +99,14 @@ echo -e "MAC Address eth0:\t$mac_hi$mac_lo"
 echo "dtparam=eth0_mac_hi=0x${mac_hi}" >> /boot/config.txt
 echo "dtparam=eth0_mac_lo=0x${mac_lo}" >> /boot/config.txt
 if [[ "$ovl" =~ ^($witheth1_devicetype_list)$ ]] ; then
-	mac_lo1=$(( 0x${mac_lo} + 1))
+	mac_lo1=$((0x${mac_lo} + 1))
 	mac_lo1=$(/usr/bin/printf "%.4hx" "${mac_lo1}")
-	echo -e "MAC Address eth1:\t$mac_hi$mac_lo1"
+	mac1="$mac_hi$mac_lo1"
+	echo -e "MAC Address eth1:\t$mac1"
 	echo "dtparam=eth1_mac_hi=0x${mac_hi}" >> /boot/config.txt
 	echo "dtparam=eth1_mac_lo=0x${mac_lo1}" >> /boot/config.txt
 	if [[ "$ovl" =~ ^compact$ ]] ; then
-		/usr/sbin/ks8851-set-mac eth1 "$mac_hi$mac_lo1"
+		/usr/sbin/ks8851-set-mac eth1 "$mac1"
 	fi
 	if [[ "$ovl" =~ ^flat$ ]] ; then
 		ln -s /lib/systemd/system/hdmi-disable.service /etc/systemd/system/multi-user.target.wants/hdmi-disable.service
@@ -126,7 +127,7 @@ if [[ $(readlink /proc/$$/fd/0) == /dev/tty* ]] ; then
 	ip link set eth0 up
 	if [[ "$ovl" =~ ^($witheth1_devicetype_list)$ ]] ; then
 		ip link set eth1 down
-		ip link set eth1 address "$mac_hi$mac_lo1"
+		ip link set eth1 address "$mac1"
 		ip link set eth1 up
 	fi
 else
