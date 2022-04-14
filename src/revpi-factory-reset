@@ -118,21 +118,7 @@ if [ "$kernel" = 44 ] ; then
 	/bin/sed --follow-symlinks -r -i -e "s/ *smsc95xx.macaddr=[^ ]*//" -e "s/$/ smsc95xx.macaddr=$mac_cmdline/" /boot/cmdline.txt
 fi
 
-# activate MAC address immediately only if logged in on the console,
-# not via ssh, as the interface has to be taken down
-if [[ $(readlink /proc/$$/fd/0) == /dev/tty* ]] ; then
-	ip link set eth0 down
-	ip link set eth0 address "$mac"
-	ip link set eth0 up
-	if [[ "$ovl" =~ ^($witheth1_devicetype_list)$ ]] ; then
-		ip link set eth1 down
-		ip link set eth1 address "$mac_hi$mac_lo1"
-		ip link set eth1 up
-	fi
-else
-	echo "Reboot to activate the MAC Address"
-fi
-
+echo "Reboot to activate the MAC Address"
 echo "Be sure to write down the password if you have lost the sticker"
 echo "on your RevPi!"
 
