@@ -1,3 +1,15 @@
+piserial (2.1.0-1) buster; urgency=medium
+
+  * Refactory: Use variables to hold device type list
+  * Refactory: Use whiptail to interact with User
+  * Add device type Core SE
+  * Add device type Connect SE
+  * Make the factory resetting progress can be cancelled
+  * Remove the setting of mac during factory reset
+  * Bump version to 2.1.0
+
+ -- Zhi Han <z.han@kunbus.com>  Tue, 19 Apr 2022 15:25:14 +0200
+
 piserial (2.0.2-2) buster; urgency=medium
 
   * Replace depend of net-tools with iproute2
