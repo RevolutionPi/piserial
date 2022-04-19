@@ -15,11 +15,14 @@ mac="${mac,,}"		# downcase
 mac="${mac//-/}"	# remove dashes
 mac="${mac//:/}"	# remove colons
 
+full_devicetype_list="compact|connect|core|flat|core-se|connect-se"	# all suported devices
+witheth1_devicetype_list="compact|connect|flat|connect-se"	# devices with "eth1"
+
 if [ "$#" != 3 ] ||
-   ! [[ "$ovl" =~ ^(compact|connect|core|flat)$ ]] ||
+   ! [[ "$ovl" =~ ^($full_devicetype_list)$ ]] ||
    ! [[ "$ser" =~ ^[0-9]+$ ]] ||
    ! [[ "$mac" =~ ^[0-9a-f]{12}$ ]] ; then
-	echo -e 1>&2 "Usage: $(basename "$0") <compact|connect|core|flat> <serial> <mac addr>\n(see front plate)"
+	echo -e 1>&2 "Usage: $(basename "$0") <"$full_devicetype_list"> <serial> <mac addr>\n(see front plate)"
 	exit 1
 fi
 
@@ -48,7 +51,7 @@ else
 fi
 
 if [ "$kernel" = 49 ] ; then
-	/bin/sed --follow-symlinks -r -i -e "/^dtoverlay=revpi-(compact|connect|core|flat)/d" /boot/config.txt
+	/bin/sed --follow-symlinks -r -i -e "/^dtoverlay=revpi-($full_devicetype_list)/d" /boot/config.txt
 	echo "dtoverlay=revpi-$ovl" >> /boot/config.txt
 	/usr/bin/dtoverlay "revpi-$ovl"
 	/bin/cp "/boot/overlays/revpi-$ovl-dt-blob.dtbo" /boot/dt-blob.bin 2>/dev/null
@@ -95,7 +98,7 @@ mac_lo="${mac:8:2}${mac:10:2}"
 echo -e "MAC Address eth0:\t$mac_hi$mac_lo"
 echo "dtparam=eth0_mac_hi=0x${mac_hi}" >> /boot/config.txt
 echo "dtparam=eth0_mac_lo=0x${mac_lo}" >> /boot/config.txt
-if [[ "$ovl" =~ ^(compact|connect|flat)$ ]] ; then
+if [[ "$ovl" =~ ^($witheth1_devicetype_list)$ ]] ; then
 	mac_lo1=$(( 0x${mac_lo} + 1))
 	mac_lo1=$(/usr/bin/printf "%.4hx" "${mac_lo1}")
 	echo -e "MAC Address eth1:\t$mac_hi$mac_lo1"
@@ -115,21 +118,7 @@ if [ "$kernel" = 44 ] ; then
 	/bin/sed --follow-symlinks -r -i -e "s/ *smsc95xx.macaddr=[^ ]*//" -e "s/$/ smsc95xx.macaddr=$mac_cmdline/" /boot/cmdline.txt
 fi
 
-# activate MAC address immediately only if logged in on the console,
-# not via ssh, as the interface has to be taken down
-if [[ $(readlink /proc/$$/fd/0) == /dev/tty* ]] ; then
-	ip link set eth0 down
-	ip link set eth0 address "$mac"
-	ip link set eth0 up
-	if [[ "$ovl" =~ ^(compact|connect|flat)$ ]] ; then
-		ip link set eth1 down
-		ip link set eth1 address "$mac_hi$mac_lo1"
-		ip link set eth1 up
-	fi
-else
-	echo "Reboot to activate the MAC Address"
-fi
-
+echo "Reboot to activate the MAC Address"
 echo "Be sure to write down the password if you have lost the sticker"
 echo "on your RevPi!"
 
