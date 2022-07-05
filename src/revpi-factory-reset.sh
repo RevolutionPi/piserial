@@ -17,12 +17,12 @@ while [ ! -r /home/pi/.revpi-factory-reset ] ; do
 	clear
 	msg="Please select the Product Type:"
 	ovl=$(whiptail --notags --title "PRODUCT TYPE" --menu "$msg" 0 0 0 \
-		compact "Revolution Pi Compact" \
-		connect "Revolution Pi Connect" \
-		connect-se "Revolution Pi Connect SE" \
-		core "Revolution Pi Core" \
-		core-se "Revolution Pi Core SE" \
-		flat "Revolution Pi Flat" \
+		compact "RevPi Compact" \
+		connect "RevPi Connect(+) / Connect S" \
+		connect-se "RevPi Connect SE" \
+		core "RevPi Core / Core 3(+) / Core S" \
+		core-se "RevPi Core SE" \
+		flat "RevPi Flat" \
 		3>&1 1>&2 2>&3)
 	if [ "$?" == "1" ]; then
 		return
