@@ -1,3 +1,9 @@
+piserial (2.1.1-1) buster; urgency=medium
+
+  * Text Changed: - Text expanded to include Connect(+) / Connect S - Text expanded to include Core / Core 3(+) / Core S
+
+ -- Ramiro Gsponer <r.gsponer@kunbus.com>  Tue, 05 Jul 2022 12:04:17 +0200
+
 piserial (2.1.0-1) buster; urgency=medium
 
   * Refactory: Use variables to hold device type list
