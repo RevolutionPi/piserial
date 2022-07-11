@@ -21,7 +21,6 @@ while [ ! -r /home/pi/.revpi-factory-reset ] ; do
 		connect "RevPi Connect(+) / Connect S" \
 		connect-se "RevPi Connect SE" \
 		core "RevPi Core / Core 3(+) / Core S" \
-		core-se "RevPi Core SE" \
 		flat "RevPi Flat" \
 		3>&1 1>&2 2>&3)
 	if [ "$?" == "1" ]; then
