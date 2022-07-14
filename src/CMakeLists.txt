@@ -10,3 +10,11 @@ install(PROGRAMS ks8851-set-mac revpi-factory-reset piSerial
 
 install(FILES revpi-factory-reset.sh
   DESTINATION /etc/profile.d)
+
+add_custom_target(lan9514.bin ALL
+  COMMAND xxd -r lan9514.hex lan9514.bin
+  DEPENDS /usr/bin/xxd
+  VERBATIM)
+
+install(FILES lan9514.bin
+  DESTINATION /usr/share/revpi)
