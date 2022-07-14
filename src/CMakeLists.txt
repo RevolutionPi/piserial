@@ -4,7 +4,7 @@ install(TARGETS revpi-serial
   RUNTIME DESTINATION sbin
 )
 
-install(PROGRAMS ks8851-set-mac revpi-factory-reset piSerial
+install(PROGRAMS lan95xx-set-mac ks8851-set-mac revpi-factory-reset piSerial
   DESTINATION sbin
 )
 
