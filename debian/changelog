@@ -1,3 +1,16 @@
+piserial (2.1.1-1) buster; urgency=medium
+
+  [ Ramiro Gsponer ]
+  * Factory Reset: Text menu changed
+
+  [ Zhi Han ]
+  * Remove Core SE from factory reset
+
+  [ Ramiro Gsponer ]
+  * Bump version to 2.1.1
+
+ -- Ramiro Gsponer <r.gsponer@kunbus.com>  Mon, 18 Jul 2022 14:05:35 +0200
+
 piserial (2.1.0-1) buster; urgency=medium
 
   * Refactory: Use variables to hold device type list
