@@ -8,6 +8,8 @@
 # reset dtoverlay, password of user pi, machine-id, hostname, FQDN and
 # MAC address of a RevPi to factory defaults
 
+. /usr/share/revpi/revpi-functions
+
 ovl="$1"
 ser="$2"
 mac="$3"
@@ -24,6 +26,14 @@ if [ "$#" != 3 ] ||
    ! [[ "$mac" =~ ^[0-9a-f]{12}$ ]] ; then
 	echo -e 1>&2 "Usage: $(basename "$0") <"$full_devicetype_list"> <serial> <mac addr>\n(see front plate)"
 	exit 1
+fi
+
+if [ "$ovl" = "core" ]; then
+	if cm1-detection; then
+		echo "Compute Module 1 has been detected, core-cm1-overlay will be used"
+		echo "automatically."
+		ovl="core-cm1"
+	fi
 fi
 
 if [ "$(/usr/bin/id -u)" != 0 ] ; then

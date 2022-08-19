@@ -16,5 +16,5 @@ add_custom_target(lan9514.bin ALL
   DEPENDS /usr/bin/xxd
   VERBATIM)
 
-install(FILES lan9514.bin
+install(FILES lan9514.bin revpi-functions
   DESTINATION /usr/share/revpi)

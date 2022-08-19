@@ -5,6 +5,8 @@
 # Copyright: 2021 Kunbus GmbH
 #
 
+. /usr/share/revpi/revpi-functions
+
 if [ "$USER" != pi ] ; then
 	return
 fi
@@ -16,15 +18,24 @@ export NEWT_COLORS='root=,black entry=white,black'
 while [ ! -r /home/pi/.revpi-factory-reset ] ; do
 	clear
 	msg="Please select the Product Type:"
-	ovl=$(whiptail --notags --title "PRODUCT TYPE" --menu "$msg" 0 0 0 \
-		compact "RevPi Compact" \
-		connect "RevPi Connect(+) / Connect S" \
-		connect-se "RevPi Connect SE" \
-		core "RevPi Core / Core 3(+) / Core S" \
-		flat "RevPi Flat" \
-		3>&1 1>&2 2>&3)
-	if [ "$?" == "1" ]; then
-		return
+	if cm1-detection; then
+		ovl=$(whiptail --notags --title "PRODUCT TYPE" --menu "$msg" 0 0 0 \
+			core "RevPi Core (autodetected)" \
+			3>&1 1>&2 2>&3)
+		if [ "$?" == "1" ]; then
+			return
+		fi
+	else
+		ovl=$(whiptail --notags --title "PRODUCT TYPE" --menu "$msg" 0 0 0 \
+			compact "RevPi Compact" \
+			connect "RevPi Connect(+) / Connect S" \
+			connect-se "RevPi Connect SE" \
+			core "RevPi Core 3(+) / Core S" \
+			flat "RevPi Flat" \
+			3>&1 1>&2 2>&3)
+		if [ "$?" == "1" ]; then
+			return
+		fi
 	fi
 
 	msg="Please enter the Serial Number on the front plate of your RevPi:"

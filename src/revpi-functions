@@ -1,0 +1,11 @@
+#!/bin/bash
+#
+# SPDX-License-Identifier: GPL-2.0
+#
+# Copyright: 2022 Kunbus GmbH
+#
+
+cm1-detection() {
+    grep -m 1 "model name" /proc/cpuinfo | grep -q v6l
+    return $?
+}
