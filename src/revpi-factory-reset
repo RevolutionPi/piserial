@@ -24,7 +24,7 @@ if [ "$#" != 3 ] ||
    ! [[ "$ovl" =~ ^($full_devicetype_list)$ ]] ||
    ! [[ "$ser" =~ ^[0-9]+$ ]] ||
    ! [[ "$mac" =~ ^[0-9a-f]{12}$ ]] ; then
-	echo -e 1>&2 "Usage: $(basename "$0") <"$full_devicetype_list"> <serial> <mac addr>\n(see front plate)"
+	echo -e 1>&2 "Usage: $(basename "$0") <$full_devicetype_list> <serial> <mac addr>\n(see front plate)"
 	exit 1
 fi
 
