@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: GPL-2.0
 #
-# Copyright: 2021 Kunbus GmbH
+# Copyright: 2021-2022 Kunbus GmbH
 #
 
 . /usr/share/revpi/revpi-functions
