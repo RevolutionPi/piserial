@@ -117,12 +117,14 @@ if [[ "$ovl" =~ ^($witheth1_devicetype_list)$ ]] ; then
 	if [[ "$ovl" =~ ^compact$ ]] ; then
 		/usr/sbin/ks8851-set-mac eth1 "$mac_hi$mac_lo1"
 	fi
-	if [[ "$ovl" =~ ^flat$ ]] ; then
-		ln -s /lib/systemd/system/hdmi-disable.service /etc/systemd/system/multi-user.target.wants/hdmi-disable.service
-		systemctl start hdmi-disable
-		echo "HDMI disabled. Use 'sudo systemctl disable hdmi-disable' and reboot to reenable HDMI."
-	fi
 fi
+
+if [[ "$ovl" =~ ^flat$ ]] ; then
+	ln -s /lib/systemd/system/hdmi-disable.service /etc/systemd/system/multi-user.target.wants/hdmi-disable.service
+	systemctl start hdmi-disable
+	echo "HDMI disabled. Use 'sudo systemctl disable hdmi-disable' and reboot to reenable HDMI."
+fi
+
 if [ "$kernel" = 44 ] ; then
 	mac_cmdline="${mac:0:2}:${mac:2:2}:${mac:4:2}:${mac:6:2}:${mac:8:2}:${mac:10:2}"
 	/bin/sed --follow-symlinks -r -i -e "s/ *smsc95xx.macaddr=[^ ]*//" -e "s/$/ smsc95xx.macaddr=$mac_cmdline/" /boot/cmdline.txt
