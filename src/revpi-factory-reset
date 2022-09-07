@@ -54,18 +54,10 @@ if [ "$last_part_size" -lt "$last_part_max" ] ; then
 	/sbin/resize2fs "/dev/$last_part"
 fi
 
-if /bin/grep -q "^dtoverlay=kunbus" /boot/config.txt ; then
-	kernel=44
-else
-	kernel=49
-fi
-
-if [ "$kernel" = 49 ] ; then
-	/bin/sed --follow-symlinks -r -i -e "/^dtoverlay=revpi-($full_devicetype_list)/d" /boot/config.txt
-	echo "dtoverlay=revpi-$ovl" >> /boot/config.txt
-	/usr/bin/dtoverlay "revpi-$ovl"
-	/bin/cp "/boot/overlays/revpi-$ovl-dt-blob.dtbo" /boot/dt-blob.bin 2>/dev/null
-fi
+/bin/sed --follow-symlinks -r -i -e "/^dtoverlay=revpi-($full_devicetype_list)/d" /boot/config.txt
+echo "dtoverlay=revpi-$ovl" >> /boot/config.txt
+/usr/bin/dtoverlay "revpi-$ovl"
+/bin/cp "/boot/overlays/revpi-$ovl-dt-blob.dtbo" /boot/dt-blob.bin 2>/dev/null
 
 piserial="/usr/sbin/piSerial"
 if [ "$ovl" == flat ]; then
@@ -123,11 +115,6 @@ if [[ "$ovl" =~ ^flat$ ]] ; then
 	ln -s /lib/systemd/system/hdmi-disable.service /etc/systemd/system/multi-user.target.wants/hdmi-disable.service
 	systemctl start hdmi-disable
 	echo "HDMI disabled. Use 'sudo systemctl disable hdmi-disable' and reboot to reenable HDMI."
-fi
-
-if [ "$kernel" = 44 ] ; then
-	mac_cmdline="${mac:0:2}:${mac:2:2}:${mac:4:2}:${mac:6:2}:${mac:8:2}:${mac:10:2}"
-	/bin/sed --follow-symlinks -r -i -e "s/ *smsc95xx.macaddr=[^ ]*//" -e "s/$/ smsc95xx.macaddr=$mac_cmdline/" /boot/cmdline.txt
 fi
 
 echo "Reboot to activate the MAC Address"
