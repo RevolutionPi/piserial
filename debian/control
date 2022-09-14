@@ -1,7 +1,7 @@
 Source: piserial
 Section: contrib/electronics
 Priority: optional
-Build-Depends: debhelper-compat (= 12), cmake, libtss2-dev (>= 2.1)
+Build-Depends: debhelper-compat (= 12), cmake, libtss2-dev (>= 2.1), xxd
 Standards-Version: 4.5.1
 Maintainer: KUNBUS GmbH <support@kunbus.com>
 Homepage: https://revolution.kunbus.com/
