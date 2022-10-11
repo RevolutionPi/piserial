@@ -1,3 +1,38 @@
+piserial (2.1.1-221011+0-038529a-1+revpi10) buster; urgency=medium
+
+  [ Zhi Han ]
+  * Add golden image for EEPROM of LAN9514
+  * Add script to write golden image and MAC to EEPROM
+
+  [ Ramiro Gsponer ]
+  * Release piserial 2.1.1-1
+
+  [ Holger Jorra ]
+  * Adapted factory reset to CM1 overlay
+  * Fix comparison between string and number
+
+  [ Philipp Rosenberger ]
+  * Remove unquoting quotes from usage string
+  * Remove usless $() and 3>&1 1>&2 2>&3 from whiptail call
+  * Update the year in the copyright header
+
+  [ Zhi Han ]
+  * Fix the company name in Copyright field
+  * Move setting of hdmi-disable out of 'if $deviceeth1...' clause
+  * Remove compatibility checks for older setups
+  * Ajust factory reset for devices with HAT EEPROM
+
+  [ Nicolai ]
+  * Fix working dir for lan9514 target
+
+  [ Nicolai Buchwitz ]
+  * Add dependency to xxd
+
+  [ Zhi Han ]
+  * Remove enabling and starting of hdmi-disable.service
+
+ -- Ramiro Gsponer <r.gsponer@kunbus.com>  Tue, 11 Oct 2022 09:30:20 +0200
+
 piserial (2.1.1-1) buster; urgency=medium
 
   [ Ramiro Gsponer ]
