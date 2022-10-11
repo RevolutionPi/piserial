@@ -127,12 +127,6 @@ if ! "$with_hat_eeprom"; then
 		fi
 	fi
 
-	if [[ "$ovl" =~ ^flat$ ]] ; then
-		ln -s /lib/systemd/system/hdmi-disable.service /etc/systemd/system/multi-user.target.wants/hdmi-disable.service
-		systemctl start hdmi-disable
-		echo "HDMI disabled. Use 'sudo systemctl disable hdmi-disable' and reboot to reenable HDMI."
-	fi
-
 	echo "Reboot to activate the MAC Address"
 fi
 echo "Be sure to write down the password if you have lost the sticker"
