@@ -1,7 +1,0 @@
-[Unit]
-Description=Disable HDMI
-After=multi-user.target
-
-[Service]
-Type=oneshot
-ExecStart=/usr/bin/tvservice -o
