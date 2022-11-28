@@ -4,15 +4,7 @@ install(TARGETS revpi-serial
   RUNTIME DESTINATION sbin
 )
 
-install(PROGRAMS lan95xx-set-mac piSerial
+install(PROGRAMS piSerial
   DESTINATION sbin
 )
 
-add_custom_target(lan9514.bin ALL
-  COMMAND xxd -r lan9514.hex lan9514.bin
-  DEPENDS /usr/bin/xxd
-  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/src
-  VERBATIM)
-
-install(FILES lan9514.bin
-  DESTINATION /usr/share/revpi)
