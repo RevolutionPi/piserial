@@ -6,6 +6,8 @@ Standards-Version: 4.5.1
 Rules-Requires-Root: no
 Maintainer: KUNBUS GmbH <support@kunbus.com>
 Homepage: https://revolution.kunbus.com/
+Vcs-Browser: https://github.com/RevolutionPi/piserial
+Vcs-Git: https://github.com/RevolutionPi/piserial.git -b raspios/buster
 
 Package: piserial
 Architecture: any
