@@ -1,21 +1,14 @@
 Source: piserial
 Section: contrib/electronics
 Priority: optional
-Build-Depends: debhelper-compat (= 12), cmake, libtss2-dev (>= 2.1), xxd
+Build-Depends: debhelper-compat (= 12), cmake, libtss2-dev (>= 2.1)
 Standards-Version: 4.5.1
 Maintainer: KUNBUS GmbH <support@kunbus.com>
 Homepage: https://revolution.kunbus.com/
 
 Package: piserial
 Architecture: any
-Depends: ${shlibs:Depends},
- ${misc:Depends},
- ethtool,
- parted,
- e2fsprogs,
- libraspberrypi-bin,
- iproute2,
- sudo
+Depends: ${shlibs:Depends}, ${misc:Depends}
 Description: Revolution Pi serial number utility
  Retrieve the RevPi's serial number and generate the factory-default password.
  Revolution Pi is a set of IoT products based on the Raspberry Pi and
