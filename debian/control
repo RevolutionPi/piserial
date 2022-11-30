@@ -10,11 +10,8 @@ Package: piserial
 Architecture: any
 Depends: ${shlibs:Depends},
  ${misc:Depends},
- ethtool,
- parted,
  e2fsprogs,
  libraspberrypi-bin,
- iproute2,
  sudo
 Description: Revolution Pi serial number utility
  Retrieve the RevPi's serial number and generate the factory-default password.
