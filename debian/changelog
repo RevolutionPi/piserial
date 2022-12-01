@@ -1,3 +1,47 @@
+piserial (3.0.0-1) buster; urgency=medium
+
+  [ Zhi Han ]
+  * Add golden image for EEPROM of LAN9514
+  * Add script to write golden image and MAC to EEPROM
+
+  [ Holger Jorra ]
+  * Adapted factory reset to CM1 overlay
+  * Fix comparison between string and number
+
+  [ Philipp Rosenberger ]
+  * Remove unquoting quotes from usage string
+  * Remove usless $() and 3>&1 1>&2 2>&3 from whiptail call
+  * Update the year in the copyright header
+
+  [ Zhi Han ]
+  * Fix the company name in Copyright field
+  * Move setting of hdmi-disable out of 'if $deviceeth1...' clause
+  * Remove compatibility checks for older setups
+  * Ajust factory reset for devices with HAT EEPROM
+
+  [ Nicolai ]
+  * Fix working dir for lan9514 target
+
+  [ Nicolai Buchwitz ]
+  * Add dependency to xxd
+
+  [ Zhi Han ]
+  * Remove enabling and starting of hdmi-disable.service
+  * Transfer systemd files to revpi-tools
+  * Transfer ks8851 tools to revpi-tools
+  * Transfer factory-reset tools to revpi-tools
+  * Transfer lan95xx tools to revpi-tools
+
+  [ Philipp Rosenberger ]
+  * Bump version to 3.0.0
+  * Remove deps of tools moved to revpi-tools repo
+  * Make the piserial break revpi-tools <= 1.0.16-1
+  * This package doesn't require root to build
+  * Add Vcs-* meta data to the control file
+  * Add valid license to copyright file: GPL-2
+
+ -- Philipp Rosenberger <p.rosenberger@kunbus.com>  Thu, 01 Dec 2022 11:09:11 +0100
+
 piserial (2.1.1-1) buster; urgency=medium
 
   [ Ramiro Gsponer ]
