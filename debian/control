@@ -12,7 +12,6 @@ Vcs-Git: https://github.com/RevolutionPi/piserial.git -b raspios/buster
 Package: piserial
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Breaks: revpi-tools (<= 1.0.16-1)
 Description: Revolution Pi serial number utility
  Retrieve the RevPi's serial number and generate the factory-default password.
  Revolution Pi is a set of IoT products based on the Raspberry Pi and
