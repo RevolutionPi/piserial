@@ -1,3 +1,9 @@
+piserial (3.0.0-2) buster; urgency=medium
+
+  * Remove breaks on revpi-tools as it breaks the upgrade path
+
+ -- Philipp Rosenberger <p.rosenberger@kunbus.com>  Tue, 06 Dec 2022 11:11:07 +0100
+
 piserial (3.0.0-1) buster; urgency=medium
 
   [ Zhi Han ]
