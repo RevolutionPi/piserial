@@ -202,7 +202,7 @@ static int atecc508a_read(const struct atecc508a *const priv,
 				return -EBADMSG;
 			}
 			if (atecc508a_recv_checkcrc((uint8_t *)&rd) < 0) {
-				warn_print("Wrong CRC recived\n");
+				warn_print("Wrong CRC received\n");
 				return -EBADMSG;
 			}
 
