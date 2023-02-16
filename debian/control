@@ -1,13 +1,13 @@
 Source: piserial
 Section: contrib/electronics
 Priority: optional
-Build-Depends: debhelper-compat (= 12), cmake, libtss2-dev (>= 2.1)
-Standards-Version: 4.5.1
-Rules-Requires-Root: no
 Maintainer: KUNBUS GmbH <support@kunbus.com>
-Homepage: https://revolution.kunbus.com/
+Rules-Requires-Root: no
+Homepage: https://revolutionpi.com/
 Vcs-Browser: https://github.com/RevolutionPi/piserial
-Vcs-Git: https://github.com/RevolutionPi/piserial.git -b raspios/buster
+Vcs-Git: https://github.com/RevolutionPi/piserial.git
+Build-Depends: debhelper-compat (= 12), cmake, libtss2-dev (>= 2.1)
+Standards-Version: 4.3.0
 
 Package: piserial
 Architecture: any

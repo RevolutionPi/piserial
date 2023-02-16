@@ -3,13 +3,13 @@ Source: https://github.com/RevolutionPi/piserial
 
 Files: *
 Copyright: 2016-2022 KUNBUS GmbH
-License: GPL-2
+License: GPL-2+
 
 Files: debian/*
-Copyright: 2016-2022 KUNBUS GmbH
-License: GPL-2
+Copyright: 2016-2023 KUNBUS GmbH
+License: GPL-2+
 
-License: GPL-2
+License: GPL-2+
  This program is free software; you can redistribute it
  and/or modify it under the terms of the GNU General Public
  License as published by the Free Software Foundation;
