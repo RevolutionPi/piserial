@@ -1,4 +1,4 @@
-piserial (3.0.0-2) buster; urgency=medium
+piserial (3.0.0-1+revpi11+1) bullseye; urgency=medium
 
   * Remove breaks on revpi-tools as it breaks the upgrade path
 
