@@ -1,3 +1,20 @@
+piserial (3.0.1-1+revpi11+1) bullseye; urgency=medium
+
+  [ Philipp Rosenberger ]
+  * Update SPDX license headers
+
+  [ Nicolai Buchwitz ]
+  * Fix typo in warn message
+  * Update copyright year
+
+  [ Lukas Wunner ]
+  * Prefer TPM whenever it's available
+
+  [ Sven Sager ]
+  * Set upstream-branch value in gbp.conf to master
+
+ -- Sven Sager <s.sager@kunbus.com>  Fri, 14 Apr 2023 14:15:31 +0200
+
 piserial (3.0.0-1+revpi11+1) bullseye; urgency=medium
 
   * Remove breaks on revpi-tools as it breaks the upgrade path
