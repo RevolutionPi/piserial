@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# SPDX-License-Identifier: GPL-2.0
+# SPDX-License-Identifier: GPL-2.0-or-later
 #
 # Copyright: 2021 KUNBUS GmbH
 #
@@ -29,7 +29,7 @@ while getopts ":spv" OPTION ; do
 	esac
 done
 
-if grep -q "revpi-flat" "/proc/device-tree/compatible"; then
+if [ -e /dev/tpm0 ] ; then
 	exec sudo /usr/sbin/revpi-serial -t /dev/tpm0 "$@";
 else
 	exec sudo /usr/sbin/revpi-serial -c /dev/i2c-1 "$@";

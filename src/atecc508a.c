@@ -1,7 +1,7 @@
-// SPDX-License-Identifier: GPL-2.0
+/* SPDX-License-Identifier: GPL-2.0-or-later */
 
 /*
- * Copyright: 2021 KUNBUS GmbH
+ * Copyright: 2021-2023 KUNBUS GmbH
  */
 
 /*
@@ -202,7 +202,7 @@ static int atecc508a_read(const struct atecc508a *const priv,
 				return -EBADMSG;
 			}
 			if (atecc508a_recv_checkcrc((uint8_t *)&rd) < 0) {
-				warn_print("Wrong CRC recived\n");
+				warn_print("Wrong CRC received\n");
 				return -EBADMSG;
 			}
 
