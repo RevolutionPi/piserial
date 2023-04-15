@@ -1,3 +1,23 @@
+piserial (3.0.1-1+revpi10+1) buster; urgency=medium
+
+  [ Philipp Rosenberger ]
+  * Update SPDX license headers
+
+  [ Nicolai Buchwitz ]
+  * Fix typo in warn message
+  * Update copyright year
+
+  [ Sven Sager ]
+  * Update debian files for debian buster
+
+  [ Lukas Wunner ]
+  * Prefer TPM whenever it's available
+
+  [ Sven Sager ]
+  * Set upstream-branch value in gbp.conf to master
+
+ -- Sven Sager <s.sager@kunbus.com>  Sat, 15 Apr 2023 17:04:42 +0200
+
 piserial (3.0.0-2) buster; urgency=medium
 
   * Remove breaks on revpi-tools as it breaks the upgrade path
