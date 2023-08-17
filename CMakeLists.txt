@@ -9,5 +9,7 @@ project(revpi-serial
   LANGUAGES C
 )
 
+include(GNUInstallDirs)
+
 add_subdirectory(src)
 add_subdirectory(docs)
