@@ -1,3 +1,5 @@
+# SPDX-FileCopyrightText: KUNBUS GmbH <support@kunbus.com>
+#
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 cmake_minimum_required(VERSION 3.13)

@@ -1,8 +1,6 @@
-/* SPDX-License-Identifier: GPL-2.0-or-later */
-
-/*
- * Copyright: 2022 KUNBUS GmbH
- */
+// SPDX-FileCopyrightText: 2022 KUNBUS GmbH <support@kunbus.com>
+//
+// SPDX-License-Identifier: GPL-2.0-or-later
 
 #include <errno.h>
 #include <fcntl.h>

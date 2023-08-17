@@ -1,8 +1,6 @@
-/* SPDX-License-Identifier: GPL-2.0-or-later */
-
-/*
- * Copyright: 2021 KUNBUS GmbH
- */
+// SPDX-FileCopyrightText: 2021 KUNBUS GmbH <support@kunbus.com>
+//
+// SPDX-License-Identifier: GPL-2.0-or-later
 
 #ifndef REVPI_SERIAL_H
 #define REVPI_SERIAL_H
