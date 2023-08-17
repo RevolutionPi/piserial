@@ -18,8 +18,7 @@
 #include "atecc508a.h"
 #include "debug.h"
 #include "tpm2.h"
-
-#define PISERIAL_VERSION "3.0.0"
+#include "version.h"
 
 const char lock_path[] = "/var/run/piserial.lock";
 
