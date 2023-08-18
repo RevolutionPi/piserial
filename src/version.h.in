@@ -2,9 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-2.0-or-later
 
-#ifndef VERSION_H
-#define VERSION_H
+#pragma once
 
 #define PISERIAL_VERSION "@PROJECT_VERSION@"
 
-#endif /* VERSION_H */

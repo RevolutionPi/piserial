@@ -2,8 +2,7 @@
 //
 // SPDX-License-Identifier: GPL-2.0-or-later
 
-#ifndef REVPI_SERIAL_H
-#define REVPI_SERIAL_H
+#pragma once
 
 #include <stdarg.h>
 #include <stdio.h>
@@ -60,4 +59,3 @@ static void log_print(const error_level_t level, const char *fmt, ...)
 #define err_print(...) \
 	log_print(LEVEL_ERROR, ##__VA_ARGS__)
 
-#endif /* INCLUDE GARD */
