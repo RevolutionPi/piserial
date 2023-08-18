@@ -5,7 +5,7 @@
 cmake_minimum_required(VERSION 3.13)
 
 project(revpi-serial
-  VERSION 3.0.1
+  VERSION 3.1.0
   LANGUAGES C
 )
 
