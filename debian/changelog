@@ -1,3 +1,23 @@
+piserial (3.1.0-1+revpi11+1) bullseye; urgency=medium
+
+  [ Nicolai Buchwitz ]
+  * ci: Add pipeline for package build
+
+  [ Philipp Rosenberger ]
+  * chore: Make repository REUSE compliant
+  * chore: Use CMake project version as PISERIAL_VERSION
+  * chore: Remove C++ dependency from project
+  * chore: Use GNUInstallDirs cmake-module to define install location
+  * feat: Load i2c-dev through /etc/modules-load.d
+  * fix: Fix tpm2.h include guard, and use #pragma once for all headers
+  * fix: Fix warning: variable 'ret' is used uninitialized
+  * fix: Warning: comparison of integers of different signs
+  * fix: Fix typo in an error message specifiy => specify
+  * chore: Update copyright date in the SPDX headers
+  * Relase piserial 3.1.0
+
+ -- Philipp Rosenberger <p.rosenberger@kunbus.com>  Fri, 18 Aug 2023 15:46:14 +0200
+
 piserial (3.0.1-1+revpi11+1) bullseye; urgency=medium
 
   [ Philipp Rosenberger ]
