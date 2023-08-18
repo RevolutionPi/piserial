@@ -1,8 +1,6 @@
-/* SPDX-License-Identifier: GPL-2.0-or-later */
-
-/*
- * Copyright: 2022 KUNBUS GmbH
- */
+// SPDX-FileCopyrightText: 2022-2023 KUNBUS GmbH <support@kunbus.com>
+//
+// SPDX-License-Identifier: GPL-2.0-or-later
 
 #include <errno.h>
 #include <fcntl.h>
@@ -20,8 +18,7 @@
 #include "atecc508a.h"
 #include "debug.h"
 #include "tpm2.h"
-
-#define PISERIAL_VERSION "3.0.0"
+#include "version.h"
 
 const char lock_path[] = "/var/run/piserial.lock";
 
@@ -168,7 +165,7 @@ int main(int argc, char *argv[])
 	} else if ((opt_dummy && opt_atecc508a) ||
 	           (opt_dummy && opt_tpm2) ||
 	           (opt_atecc508a && opt_tpm2)) {
-		err_print("Please specifiy only one device option.\n");
+		err_print("Please specify only one device option.\n");
 		usage(stderr, pname);
 		exit(EXIT_FAILURE);
 	}
@@ -188,7 +185,7 @@ int main(int argc, char *argv[])
 		ret = dummy_serial(serial);
 	else if (opt_atecc508a)
 		ret = atecc508a_serial(dev_path, dev_addr, serial);
-	else if (opt_tpm2)
+	else
 		ret = tpm2_serial(dev_path, serial);
 	piserial_unlock(lock_fd);
 	if (ret < 0) {

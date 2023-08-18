@@ -1,8 +1,6 @@
-/* SPDX-License-Identifier: GPL-2.0-or-later */
-
-/*
- * Copyright: 2021-2023 KUNBUS GmbH
- */
+// SPDX-FileCopyrightText: 2021-2023 KUNBUS GmbH <support@kunbus.com>
+//
+// SPDX-License-Identifier: GPL-2.0-or-later
 
 /*
  * Microchip Technology Inc. ATECC508A
@@ -193,7 +191,7 @@ static int atecc508a_read(const struct atecc508a *const priv,
 			retry++;
 			if (retry >= MAX_RETRY)
 				return -1;
-		} else if (ret != sizeof(struct atecc508a_recv_data) - num_read) {
+		} else if ((size_t)ret != sizeof(struct atecc508a_recv_data) - num_read) {
 			num_read += ret;
 			continue;
 		} else {

@@ -1,14 +1,9 @@
-/* SPDX-License-Identifier: GPL-2.0-or-later */
+// SPDX-FileCopyrightText: 2021-2023 KUNBUS GmbH <support@kunbus.com>
+//
+// SPDX-License-Identifier: GPL-2.0-or-later
 
-/*
- * Copyright: 2021 KUNBUS GmbH
- */
-
-#ifndef TPM2_H
-#define TPM2_h
+#pragma once
 
 #include <stdint.h>
 
 extern int tpm2_serial(const char *dev_path, uint8_t * serial);
-
-#endif
