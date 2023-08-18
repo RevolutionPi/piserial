@@ -165,7 +165,7 @@ int main(int argc, char *argv[])
 	} else if ((opt_dummy && opt_atecc508a) ||
 	           (opt_dummy && opt_tpm2) ||
 	           (opt_atecc508a && opt_tpm2)) {
-		err_print("Please specifiy only one device option.\n");
+		err_print("Please specify only one device option.\n");
 		usage(stderr, pname);
 		exit(EXIT_FAILURE);
 	}
