@@ -185,7 +185,7 @@ int main(int argc, char *argv[])
 		ret = dummy_serial(serial);
 	else if (opt_atecc508a)
 		ret = atecc508a_serial(dev_path, dev_addr, serial);
-	else if (opt_tpm2)
+	else
 		ret = tpm2_serial(dev_path, serial);
 	piserial_unlock(lock_fd);
 	if (ret < 0) {
