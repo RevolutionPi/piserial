@@ -1,4 +1,4 @@
-// SPDX-FileCopyrightText: 2021 KUNBUS GmbH <support@kunbus.com>
+// SPDX-FileCopyrightText: 2021-2023 KUNBUS GmbH <support@kunbus.com>
 //
 // SPDX-License-Identifier: GPL-2.0-or-later
 
