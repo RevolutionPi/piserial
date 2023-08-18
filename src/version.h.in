@@ -1,0 +1,8 @@
+// SPDX-FileCopyrightText: 2023 KUNBUS GmbH <support@kunbus.com>
+//
+// SPDX-License-Identifier: GPL-2.0-or-later
+
+#pragma once
+
+#define PISERIAL_VERSION "@PROJECT_VERSION@"
+
