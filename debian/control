@@ -5,7 +5,7 @@ Maintainer: KUNBUS GmbH <support@kunbus.com>
 Rules-Requires-Root: no
 Homepage: https://revolutionpi.com/
 Vcs-Browser: https://gitlab.com/revolutionpi/piserial
-Vcs-Git: https://gitlab.com/revolutionpi/piserial.git -b raspios/bookworm
+Vcs-Git: https://gitlab.com/revolutionpi/piserial.git -b debian/bookworm
 Build-Depends: debhelper-compat (= 13), cmake, libtss2-dev (>= 3.0)
 Standards-Version: 4.6.2
 
