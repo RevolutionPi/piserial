@@ -4,6 +4,8 @@ include:
     file: "base.yml"
   - project: "revolutionpi/infrastructure/ci-templates"
     file: "/package-build-raspios-snapshot.yml"
+  - project: "revolutionpi/infrastructure/ci-templates"
+    file: "/reuse-lint.yml"
   - local: debian/gitlab-ci.yml
     rules:
       - if: $CI_COMMIT_BRANCH =~ /^raspios\/.*/
