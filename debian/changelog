@@ -17,7 +17,7 @@ piserial (3.1.0-1+revpi12+1) bookworm; urgency=medium
   * fix: Warning: comparison of integers of different signs
   * fix: Fix typo in an error message specifiy => specify
   * chore: Update copyright date in the SPDX headers
-  * Relase piserial 3.1.0
+  * Release piserial 3.1.0
 
  -- Philipp Rosenberger <p.rosenberger@kunbus.com>  Fri, 18 Aug 2023 15:54:56 +0200
 
