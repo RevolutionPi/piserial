@@ -2,11 +2,11 @@ piSerial(8)
 
 # NAME
 
-piSerial - retrieve the RevPi serial number
+piSerial - Retrieve the RevPi serial number or password
 
 # SYNOPSIS
 
-*piSerial* [_options_]
+*piSerial* [*-p*|*-s*|*-v*]
 
 # DESCRIPTION
 
@@ -32,4 +32,4 @@ printed.
 
 # SEE ALSO
 
-For more information on Revolution Pi visit <https://revolutionpi.kunbus.com>
+For more information on Revolution Pi visit <https://revolutionpi.com>.
