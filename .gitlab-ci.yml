@@ -27,6 +27,6 @@ static-analysis:
   # create needed version.h file
   # run tidy with obsolete POSIX version functions
   script:
-    - apt update && apt install -y libtss2-dev cmake
+    - apt update && apt install -y libtss2-dev cmake scdoc
     - mkdir build && cd build && cmake -DCMAKE_C_CLANG_TIDY:STRING="clang-tidy" -DCMAKE_C_STANDARD="99" .. && make
 
