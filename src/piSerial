@@ -29,7 +29,7 @@ while getopts ":spv" OPTION ; do
 done
 
 if [ -e /dev/tpm0 ] ; then
-	exec sudo /usr/sbin/revpi-serial -t /dev/tpm0 "$@";
+	exec /usr/sbin/revpi-serial -t /dev/tpm0 "$@";
 else
-	exec sudo /usr/sbin/revpi-serial -c /dev/i2c-1 "$@";
+	exec /usr/sbin/revpi-serial -c /dev/i2c-1 "$@";
 fi

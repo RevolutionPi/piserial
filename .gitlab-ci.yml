@@ -1,11 +1,32 @@
+# SPDX-FileCopyrightText: 2023-2024 KUNBUS GmbH
+#
+# SPDX-License-Identifier: GPL-2.0-or-later
+
 # Build a snapshot debian package from current master
 include:
   - project: "revolutionpi/infrastructure/ci-templates"
     file: "base.yml"
   - project: "revolutionpi/infrastructure/ci-templates"
-    file: "/package-build-raspios-snapshot.yml"
+    file: "/package-snapshot-debian.yml"
+  - project: "revolutionpi/infrastructure/ci-templates"
+    file: "/reuse-lint.yml"
   - local: debian/gitlab-ci.yml
     rules:
       - if: $CI_COMMIT_BRANCH =~ /^raspios\/.*/
       - exists:
           - debian/gitlab-ci.yml
+
+static-analysis:
+  stage: lint
+  image: snowstep/llvm:bookworm
+  tags:
+    - self-hosted
+    - docker
+    - host-amd64
+  # install missing dependencies of container
+  # create needed version.h file
+  # run tidy with obsolete POSIX version functions
+  script:
+    - apt update && apt install -y libtss2-dev cmake scdoc
+    - mkdir build && cd build && cmake -DCMAKE_C_CLANG_TIDY:STRING="clang-tidy" -DCMAKE_C_STANDARD="99" .. && make
+
