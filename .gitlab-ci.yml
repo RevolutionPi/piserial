@@ -12,10 +12,15 @@ include:
     file: "/reuse-lint.yml"
   - project: "revolutionpi/infrastructure/ci-templates"
     file: "/check-commit/lint-commit.yml"
+  - project: revolutionpi/infrastructure/ci-templates
+    file: create-pristine-tar.yml
   - local: debian/gitlab-ci.yml
     rules:
       - exists:
           - debian/gitlab-ci.yml
+
+variables:
+  SRCPKG_NAME: piserial
 
 static-analysis:
   stage: lint
