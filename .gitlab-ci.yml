@@ -44,6 +44,7 @@ static-analysis:
 
 coverity-submit:
   stage: publish
+  needs: []
   image: registry.gitlab.com/revolutionpi/infrastructure/docker-images/build-container/build-container-trixie:arm64-latest
   tags:
     - self-hosted
