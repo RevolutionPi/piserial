@@ -33,16 +33,11 @@ static-analysis:
     - self-hosted
     - docker
     - host-amd64
-  # install missing dependencies of container
-  # create needed version.h file
-  # run tidy with obsolete POSIX version functions
   script:
-    - apt update && apt install -y libtss2-dev cmake scdoc
-    - cmake
-        -Bbuild -DCMAKE_C_CLANG_TIDY:STRING="clang-tidy"
-        -DCMAKE_C_STANDARD="99"
-        .
-    - cmake --build build
+    - apt update && apt install -y libtss2-dev meson pkgconf git
+    - meson setup -Dman-pages=disabled ../builddir
+    - meson compile -C ../builddir
+    - ninja -C ../builddir clang-tidy
 
 coverity-submit:
   before_script:
