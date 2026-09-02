@@ -5,7 +5,7 @@
 project(
   'piserial',
   'c',
-  version: '3.1.0',
+  version: '4.0.1',
 )
 
 sbindir = get_option('sbindir')
