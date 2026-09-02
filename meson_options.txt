@@ -1,0 +1,5 @@
+# SPDX-FileCopyrightText: 2026 KUNBUS GmbH <support@kunbus.com>
+#
+# SPDX-License-Identifier: GPL-2.0-or-later
+
+option('man-pages', type: 'feature', value: 'auto')
