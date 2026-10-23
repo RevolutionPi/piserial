@@ -2,11 +2,11 @@ Format: http://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Source: https://github.com/RevolutionPi/piserial
 
 Files: *
-Copyright: 2016-2022 KUNBUS GmbH
+Copyright: 2016-2026 KUNBUS GmbH
 License: GPL-2+
 
 Files: debian/*
-Copyright: 2016-2023 KUNBUS GmbH
+Copyright: 2016-2026 KUNBUS GmbH
 License: GPL-2+
 
 License: GPL-2+
