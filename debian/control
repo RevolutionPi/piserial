@@ -7,9 +7,9 @@ Homepage: https://revolutionpi.com/
 Vcs-Browser: https://gitlab.com/revolutionpi/piserial
 Vcs-Git: https://gitlab.com/revolutionpi/piserial.git -b debian/trixie
 Build-Depends:
- cmake,
  debhelper-compat (= 13),
  libtss2-dev (>= 3.0),
+ meson,
  scdoc,
 Standards-Version: 4.7.2
 
