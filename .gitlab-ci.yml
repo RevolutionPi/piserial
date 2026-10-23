@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2023-2024 KUNBUS GmbH
+# SPDX-FileCopyrightText: 2023-2026 KUNBUS GmbH
 #
 # SPDX-License-Identifier: GPL-2.0-or-later
 
@@ -7,14 +7,24 @@ include:
   - project: "revolutionpi/infrastructure/ci-templates"
     file: "base.yml"
   - project: "revolutionpi/infrastructure/ci-templates"
-    file: "/package-snapshot-debian.yml"
+    file: "global-vars.yml"
+  - project: "revolutionpi/infrastructure/ci-templates"
+    file: "package-devel.yml"
   - project: "revolutionpi/infrastructure/ci-templates"
     file: "/reuse-lint.yml"
+  - project: "revolutionpi/infrastructure/ci-templates"
+    file: "/check-commit/lint-commit.yml"
+  - project: revolutionpi/infrastructure/ci-templates
+    file: coverity-submit.yml
+  - project: revolutionpi/infrastructure/ci-templates
+    file: create-pristine-tar.yml
   - local: debian/gitlab-ci.yml
     rules:
-      - if: $CI_COMMIT_BRANCH =~ /^raspios\/.*/
       - exists:
           - debian/gitlab-ci.yml
+
+variables:
+  SRCPKG_NAME: piserial
 
 static-analysis:
   stage: lint
@@ -23,10 +33,15 @@ static-analysis:
     - self-hosted
     - docker
     - host-amd64
-  # install missing dependencies of container
-  # create needed version.h file
-  # run tidy with obsolete POSIX version functions
   script:
-    - apt update && apt install -y libtss2-dev cmake scdoc
-    - mkdir build && cd build && cmake -DCMAKE_C_CLANG_TIDY:STRING="clang-tidy" -DCMAKE_C_STANDARD="99" .. && make
+    - apt update && apt install -y libtss2-dev meson pkgconf git
+    - meson setup -Dman-pages=disabled ../builddir
+    - meson compile -C ../builddir
+    - ninja -C ../builddir clang-tidy
 
+coverity-submit:
+  before_script:
+    - apt update
+    - apt-get build-dep -y piserial
+    - meson setup builddir
+    - export BUILD_CMD="meson compile -C builddir"
